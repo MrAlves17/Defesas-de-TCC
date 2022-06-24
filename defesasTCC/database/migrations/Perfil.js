@@ -7,7 +7,7 @@ class PerfilSchema extends Schema {
   up () {
     this.create('Perfil', (table) => {
       table.increments('idPerfil').unsigned().notNullable()
-      table.enum('nomePerfil', 255).notNullable().unique()
+      table.string('nomePerfil', 255).notNullable().unique()
       table.timestamps()
     })
   }
