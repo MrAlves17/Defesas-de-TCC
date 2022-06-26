@@ -32,7 +32,7 @@ module.exports = {
     model: 'App/Models/User',
     scheme: 'session',
     uid: 'email',
-    password: 'password'
+    password: 'senha'
   },
 
   /*
@@ -53,7 +53,7 @@ module.exports = {
     model: 'App/Models/User',
     scheme: 'basic',
     uid: 'email',
-    password: 'password'
+    password: 'senha'
   },
 
   /*
@@ -70,7 +70,7 @@ module.exports = {
     model: 'App/Models/User',
     scheme: 'jwt',
     uid: 'email',
-    password: 'password',
+    password: 'senha',
     options: {
       secret: Env.get('APP_KEY')
     }
@@ -89,6 +89,6 @@ module.exports = {
     model: 'App/Models/User',
     scheme: 'api',
     uid: 'email',
-    password: 'password'
+    password: 'senha'
   }
 }

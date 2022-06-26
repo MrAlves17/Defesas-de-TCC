@@ -16,5 +16,6 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
 
-Route.on('/').render('login')
-
+Route.get('/', ({view})=>view.render('login'))
+Route.on('home').render('home')
+Route.post('/', 'AuthController.postLogin').as('auth.postLogin')
