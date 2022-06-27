@@ -15,8 +15,8 @@ class Usuario extends Model {
      * it to the database.
      */
     this.addHook('beforeSave', async (usuarioInstance) => {
-      if (usuarioInstance.dirty.password) {
-        usuarioInstance.password = await Hash.make(usuarioInstance.password)
+      if (usuarioInstance.dirty.senha) {
+        usuarioInstance.senha = await Hash.make(usuarioInstance.senha)
       }
     })
   }
