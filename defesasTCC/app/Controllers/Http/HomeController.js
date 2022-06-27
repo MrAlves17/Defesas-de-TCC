@@ -9,9 +9,10 @@ const obj = {nome:'abcde'}
 class HomeController {
 
     async view( {auth, view, response} ){
-        const usuariosPendentes = await Database.from('Usuario').select('*').where('statusUsuario', 'like', '%Pendente%')
+        const usuariosPendentes = await Database.from('Usuario').join('Perfil','Usuario.idPerfil','=','Perfil.idPerfil').select('Usuario.*').select('Perfil.nomePerfil').where('statusUsuario', 'like', '%Pendente%')
+        const obj = {up: usuariosPendentes}
         await console.log(usuariosPendentes)
-        return await view.render('home',{usuariosPendentes})
+        return await view.render('home',{obj})
     }
 
 }

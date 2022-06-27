@@ -16,7 +16,10 @@
       @loggedIn
         <p> Bem vindo, {{ auth.user.nomeUsuario }} </p>
         @if(auth.user.idPerfil==1)
-         {{usuariosPendentes.nomeUsuario}}
+        <h2>Pendências de Cadastro de Usuário</h2>
+         @each(user in obj.up)
+          <li>{{user.nomeUsuario}}, {{user.email}}, {{user.matricula}}, {{user.nomePerfil}}, {{ user.statusUsuario}}</li>
+         @endeach
         @endif
       @endloggedIn
     </div>
