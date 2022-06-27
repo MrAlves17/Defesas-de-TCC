@@ -15,6 +15,9 @@
       --}}
       @loggedIn
         <p> Bem vindo, {{ auth.user.nomeUsuario }} </p>
+        @if(auth.user.idPerfil==1)
+         {{usuariosPendentes.nomeUsuario}}
+        @endif
       @endloggedIn
     </div>
   </section>

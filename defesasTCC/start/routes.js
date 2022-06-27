@@ -15,10 +15,12 @@
 
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
+const obj2 = {nome:"aaaaaa"}
 
 Route.on('/').render('login')
 Route.post('/', 'AuthController.postLogin').as('auth.postLogin')
 Route.on('register').render('register')
 Route.post('register', 'AuthController.postRegister').as('auth.postRegister')
-Route.on('home').render('home')
+//Route.on('home').render('home')
+Route.get('home','HomeController.view')
 Route.get('logout','AuthController.logout')

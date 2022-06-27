@@ -1,12 +1,15 @@
 'use strict'
+
+const Database = use('Database')
+
 const User = use('App/Models/User')
 const Hash = use('Hash')
 
 class AuthController {
 
-    async postLogin({request, auth, response}){
+    async postLogin({request, auth, response, view}){
         const loginData = request.only(['email','senha'])
-        
+
         const user = await User.findBy('email', loginData.email)
         if (!(await Hash.verify(loginData.senha, user.senha))) {
             return response.badRequest('Credenciais não conferem')
@@ -27,7 +30,7 @@ class AuthController {
     async postRegister({ request, session, response }) {
         const all = request.all()
 
-        console.log(all)
+        // console.log(all)
         // console.log(optionsPerfil.selectedIndex)
         // console.log(optionsPerfil[optionsPerfil.selectedIndex].value)
        
@@ -39,8 +42,12 @@ class AuthController {
             idPerfil: parseInt(all.idPerfil),
             ehInterno: parseInt(all.ehInterno)
         })
-        session.flash({ successmessage: 'User have been created successfully'})
+        session.flash({ successmessage: 'Usuário Criado com Sucesso. Aguardando ativação por parte do Administrador'})
         return response.route('/');
+    }
+
+    async postConfirmRegister(){
+        //const usuariosPendentes = await User.findBy('status', 'Pendente')
     }
 }
 
