@@ -9,7 +9,9 @@ class AuthController {
         
         const user = await User.findBy('email', loginData.email)
         if (!(await Hash.verify(loginData.senha, user.senha))) {
-            return response.badRequest('Invalid credentials')
+            return response.badRequest('Credenciais não conferem')
+        }else if (await (user.statusUsuario != 'Ativo')) {
+            return response.badRequest('Usuario não está Ativo. Contate o Administrador')
         }
         await auth.loginViaId(user.id)
         // const view = await response.view('home', user)
@@ -23,17 +25,22 @@ class AuthController {
     }
 
     async postRegister({ request, session, response }) {
-        const user = await User.create({
-            nomeUsuario: request.input('nomeUsuario'),
-            email: request.input('email'),
-            senha: request.input('senha'),
-            matricula: request.input('matricula'),
-            idPerfil: request.input('idPerfil'),
-            ehInterno: request.input('ehInterno')
+        const all = request.all()
 
+        console.log(all)
+        // console.log(optionsPerfil.selectedIndex)
+        // console.log(optionsPerfil[optionsPerfil.selectedIndex].value)
+       
+        const user = await User.create({
+            nomeUsuario: all.nomeUsuario,
+            email: all.email,
+            senha: all.senha,
+            matricula: all.matricula,
+            idPerfil: parseInt(all.idPerfil),
+            ehInterno: parseInt(all.ehInterno)
         })
         session.flash({ successmessage: 'User have been created successfully'})
-        return response.route('login.create');
+        return response.route('/');
     }
 }
 
