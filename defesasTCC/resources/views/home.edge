@@ -17,9 +17,19 @@
         <p> Bem vindo, {{ auth.user.nomeUsuario }} </p>
         @if(auth.user.idPerfil==1)
         <h2>Pendências de Cadastro de Usuário</h2>
-         @each(user in obj.up)
-          <li>{{user.nomeUsuario}}, {{user.email}}, {{user.matricula}}, {{user.nomePerfil}}, {{ user.statusUsuario}}</li>
-         @endeach
+          <table>
+            @each(user in obj.up)
+              <tr>
+              <th>{{user.nomeUsuario}}</th>
+              <th>{{user.email}}
+              <th>{{user.matricula}}</th>
+              <th>{{user.nomePerfil}}</th>
+              <th>{{ user.statusUsuario}}</th>
+              <th><button type="Submit" class="btn btn-primary">Aceitar</button></th>
+              <th><button type="Submit" class="btn btn-primary">Recusar</button></th>
+              </tr>
+            @endeach
+          </table>
         @endif
       @endloggedIn
     </div>

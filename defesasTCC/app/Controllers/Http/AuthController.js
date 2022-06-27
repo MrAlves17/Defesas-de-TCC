@@ -47,7 +47,10 @@ class AuthController {
     }
 
     async postConfirmRegister(){
-        //const usuariosPendentes = await User.findBy('status', 'Pendente')
+        
+    }
+    async postDenyRegister(){
+        
     }
 }
 
