@@ -3,6 +3,7 @@ const User = use('App/Models/User')
 const Hash = use('Hash')
 
 class AuthController {
+
     async postLogin({request, auth, response}){
         const loginData = request.only(['email','senha'])
         
@@ -19,6 +20,20 @@ class AuthController {
     async logout ({ auth, response }) {
         await auth.logout()
         return response.route('/')
+    }
+
+    async postRegister({ request, session, response }) {
+        const user = await User.create({
+            nomeUsuario: request.input('nomeUsuario'),
+            email: request.input('email'),
+            senha: request.input('senha'),
+            matricula: request.input('matricula'),
+            idPerfil: request.input('idPerfil'),
+            ehInterno: request.input('ehInterno')
+
+        })
+        session.flash({ successmessage: 'User have been created successfully'})
+        return response.route('login.create');
     }
 }
 

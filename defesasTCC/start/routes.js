@@ -17,6 +17,7 @@
 const Route = use('Route')
 
 Route.on('/').render('login')
-Route.on('home').render('home')
 Route.post('/', 'AuthController.postLogin').as('auth.postLogin')
+Route.post('/', 'AuthController.postRegister').as('auth.postRegister')
+Route.on('home').render('home')
 Route.get('logout','AuthController.logout')
