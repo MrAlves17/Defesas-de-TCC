@@ -13,10 +13,11 @@ class HomeController {
         const obj = {up: usuariosPendentes}
         return await view.render('home',{obj})
     }
-    async postConfirmRegister({ auth, response, request, params:{idUsuario} }){
-        const usuarioPendente = await User.findById(parseInt(idUsuario))
+    async postConfirmRegister({ view, auth, response, request, params:id }){
+        const usuarioPendente = await User.findBy('id',id.idUsuario)
         await usuarioPendente.merge({statusUsuario:'Ativo'})
-        await usuarioPendente.save()      
+        await usuarioPendente.save()
+        return await view.render('home')      
     }
     async postDenyRegister(){
         
