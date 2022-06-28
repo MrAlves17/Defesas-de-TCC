@@ -25,8 +25,8 @@
               <th>{{user.matricula}}</th>
               <th>{{user.nomePerfil}}</th>
               <th>{{ user.statusUsuario}}</th>
-              <th><button type="Submit" class="btn btn-primary">Aceitar</button></th>
-              <th><button type="Submit" class="btn btn-primary">Recusar</button></th>
+              <th><form method="POST" action="{{route(`home/:${user.idUsuario}`)}}"><button type="Submit" class="btn btn-primary">Aceitar</button></form></th>
+              <th><form method="POST" action="{{route('home.postDeny')}}"><button type="Submit" class="btn btn-primary">Recusar</button></form></th>
               </tr>
             @endeach
           </table>

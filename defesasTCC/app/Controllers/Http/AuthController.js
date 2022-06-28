@@ -45,13 +45,6 @@ class AuthController {
         session.flash({ successmessage: 'Usuário Criado com Sucesso. Aguardando ativação por parte do Administrador'})
         return response.route('/');
     }
-
-    async postConfirmRegister(){
-        
-    }
-    async postDenyRegister(){
-        
-    }
 }
 
 module.exports = AuthController
