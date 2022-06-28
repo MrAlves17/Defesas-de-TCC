@@ -19,8 +19,11 @@ class HomeController {
         await usuarioPendente.save()
         return await view.render('home')      
     }
-    async postDenyRegister(){
-        
+    async postDenyRegister({ view, auth, response, request, params:id }){
+        const usuarioPendente = await User.findBy('id',id.idUsuario)
+        await usuarioPendente.delete()
+        await usuarioPendente.save()
+        return await view.render('home')   
     }
 
 }
