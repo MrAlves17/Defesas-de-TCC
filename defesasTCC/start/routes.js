@@ -1,5 +1,7 @@
 'use strict'
 
+const HomeController = require('../app/Controllers/Http/HomeController')
+
 /*
 |--------------------------------------------------------------------------
 | Routes
@@ -25,3 +27,5 @@ Route.get('logout','AuthController.logout')
 Route.put('home/confirma/:idUsuario','HomeController.postConfirmRegister')
 Route.put('home/remove/:idUsuario','HomeController.postDenyRegister')
 Route.post('home/cria/defesa','HomeController.postCriaDefesa')
+Route.put('home/edita/defesa/:idDefesa','HomeController.alteraDefesa')
+Route.put('home/edita/:idDefesa','HomeController.getDefesa')

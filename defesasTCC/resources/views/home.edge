@@ -89,7 +89,7 @@
                     <div>Professor Orientador: {{defesa.nomeOrientador}}</div>
                     <div>Professor Convidado A: {{defesa.nomeConvidadoA}}</div>
                     <div>Professor Convidado B: {{defesa.nomeConvidadoB}}</div>
-                    <button type="Submit" class="btn btn-primary">Editar</button>
+                    <form method="POST" action="home/edita/{{defesa.idDefesa}}?_method=PUT">{{ csrfField() }}<button type="Submit" class="btn btn-primary">Editar</button><form>
                   @endeach
               @endif
             @endloggedIn

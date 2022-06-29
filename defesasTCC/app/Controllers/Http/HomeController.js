@@ -39,14 +39,14 @@ class HomeController {
         console.log(obj)
         return await view.render('home',{obj})
     }
-    async postConfirmRegister({ view, auth, response, request, params:id }){
-        const usuarioPendente = await User.findBy('id',id.idUsuario)
+    async postConfirmRegister({ view, auth, response, request, params:u }){
+        const usuarioPendente = await User.findBy('id',u.idUsuario)
         await usuarioPendente.merge({statusUsuario:'Ativo'})
         await usuarioPendente.save()
         return await view.render('home')      
     }
-    async postDenyRegister({ view, auth, response, request, params:id }){
-        const usuarioPendente = await User.findBy('id',id.idUsuario)
+    async postDenyRegister({ view, auth, response, request, params:u }){
+        const usuarioPendente = await User.findBy('id',u.idUsuario)
         await usuarioPendente.delete()
         await usuarioPendente.save()
         return await view.render('home')   
@@ -61,7 +61,6 @@ class HomeController {
             idConvidadoB: parseInt(all.idConvidadoB),
             statusConvidadoB: all.statusConvidadoB
         })
-        console.log(banca)
         const defesa = await Defesa.create({
             dataDefesa: all.dataDefesa,
             local: all.local,
@@ -72,6 +71,39 @@ class HomeController {
             idBanca: banca.id  
         })
         session.flash({ successmessage: 'Defesa Criada com Sucesso. '})
+        return response.route('/home');
+    }
+    async getDefesa({ auth, params:defe, view }){
+        const defesa = 
+                await Database
+                    .from('Defesa')
+                    .join('Banca','Defesa.idBanca','=','Banca.idBanca')
+                    .leftJoin('Usuario as PO','Banca.IdOrientador','=','PO.id')
+                    .leftJoin('Usuario as CA','Banca.IdConvidadoA','=','CA.id')
+                    .leftJoin('Usuario as CB','Banca.IdConvidadoB','=','CB.id')
+                    .select('Defesa.*')
+                    .select('PO.nomeUsuario as nomeOrientador')
+                    .select('CA.nomeUsuario as nomeConvidadoA')
+                    .select('CB.nomeUsuario as nomeConvidadoB')
+                    .select('Banca.*')
+                    .where('idDefesa','=',defe.idDefesa)
+                    console.log(defesa)
+        const obj = {defesa: defesa}
+        return await view.render('edit',{obj})
+    }
+    async alteraDefesa({ request, auth, params: d, view} ){
+        const all = request.all()
+        const defesa = await Defesa.findBy('idDefesa',d.idDefesa)
+        await defesa.merge({
+            dataDefesa: all.dataDefesa,
+            local: all.local,
+            titulo: all.titulo,
+            descricao: all.descricao,
+            tags: all.tags
+        })
+        console.log(defesa)
+        await defesa.save()
+        session.flash({ successmessage: 'Defesa Atualizada com Sucesso.'})
         return response.route('/home');
     }
 }
