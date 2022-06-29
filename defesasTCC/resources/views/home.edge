@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Página Inicial</title>
+</head>
+<body>
+  <section>
+    <div>
+      {{--
+        This tag let us know if the current user is logged in or not.
+
+        ref: http://adonisjs.com/docs/4.0/views#_loggedin
+        ref: http://adonisjs.com/docs/4.0/authentication#_loggedin
+      --}}
+      @loggedIn
+        <p> Bem vindo, {{ auth.user.nomeUsuario }} </p>
+        <h1> Bem vindo, {{ auth.user.nomeUsuario }} </h1>
+        @if(auth.user.idPerfil == 1)
+          <p> {{obj.nome}}</p>
+        @endif
+      @endloggedIn
+    </div>
+  </section>
+</body>
+</html>

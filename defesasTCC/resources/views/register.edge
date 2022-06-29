@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Faça Login no Sistema de Defesas de TCC</title>
+  {{ style('style') }}
+  {{ style('https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css') }}
+  {{ script('https://code.jquery.com/jquery-3.3.1.slim.min.js') }}
+</head>
+<body>
+  <section>
+  <div class="container">
+  <div class="row">
+    <div class="col-10 shadow bg-white mt-5 mx-5 p-3 rounded offset-md-4">
+      <form method="POST" action="{{route('auth.postLogin')}}">
+        {{ csrfField() }}
+          <div>
+            @if(flashMessage('successmessage'))
+              <span class="alert alert-success p-1">{{ flashMessage('successmessage') }}</span>
+            @endif
+          </div>
+          <div class="form-group">
+            <label for="nomeUsuario">Nome Completo</label>
+            <input type="name" class="form-control" id="nomeUsuario" name="nomeUsuario" value="{{old('nomeUsuario','')}}" placeholder="Insira seu Nome Completo">
+            {{ elIf('<span class=text-danger>$self</span>', getErrorFor('nomeUsuario'), hasErrorFor('nomeUsuario')) }}
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" name="email" value="{{old('email','')}}"  placeholder="Insira seu email">
+            {{ elIf('<span class=text-danger>$self</span>', getErrorFor('email'), hasErrorFor('email')) }}
+          </div>
+          <div class="form-group">
+            <label for="password">Senha</label>
+            <input type="password" class="form-control" id="senha" name="senha" value="{{old('senha','')}}" placeholder="Insira sua senha">
+            {{ elIf('<span class=text-danger>$self</span>', getErrorFor('senha'), hasErrorFor('senha')) }}
+          </div>
+          <div class="form-group">
+            <label for="matricula">Matrícula</label>
+            <input type="text" class="form-control" id="matricula" name="matricula" value="{{old('matricula','')}}" placeholder="Insira sua matrícula">
+            {{ elIf('<span class=text-danger>$self</span>', getErrorFor('matricula'), hasErrorFor('matricula')) }}
+          </div>
+          <div class="form-group">
+            <label for="perfil">Perfil</label>
+            <class="form-control" id="matricula" name="matricula" value="{{old('matricula','')}}" placeholder="Insira sua matrícula">
+                <option>Estudante</option> 
+                <option>Professor</option> 
+                <option>Secretaria</option> 
+            {{ elIf('<span class=text-danger>$self</span>', getErrorFor('matricula'), hasErrorFor('matricula')) }}
+          </div>
+          <div class="form-group">
+            <label for="ehInterno">Você faz parte desta faculdade?</label>
+            <input type="checkbox" class="form-control" id="ehInterno" name="ehInterno" value="{{old('ehInterno','')}}">
+            {{ elIf('<span class=text-danger>$self</span>', getErrorFor('ehInterno'), hasErrorFor('ehInterno')) }}
+          </div>
+          <div class="text-center">
+            <button type="Submit" class="btn btn-primary">Cadastrar</button>
+          </div>
+      </form>
+    </div>
+  </div>
+  </div>  
+  </section>
+  {{ script('https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js') }}
+</body>
+</html>
