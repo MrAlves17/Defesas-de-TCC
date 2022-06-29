@@ -15,6 +15,10 @@
       --}}
       @loggedIn
         <p> Bem vindo, {{ auth.user.nomeUsuario }} </p>
+        <h1> Bem vindo, {{ auth.user.nomeUsuario }} </h1>
+        @if(auth.user.idPerfil == 1)
+          <p> {{obj.nome}}</p>
+        @endif
       @endloggedIn
     </div>
   </section>
