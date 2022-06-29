@@ -7,7 +7,7 @@ class DefesaSchema extends Schema {
   up () {
     this.create('Defesa', (table) => {
         table.increments('idDefesa').unsigned().notNullable()
-        table.date('dataDefesa').notNullable().unique()
+        table.date('dataDefesa').notNullable()
         table.string('local', 255).notNullable()
         table.string('titulo', 255).notNullable().unique()
         table.string('descricao', 255).notNullable()

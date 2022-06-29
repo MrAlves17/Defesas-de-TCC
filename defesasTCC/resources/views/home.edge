@@ -27,70 +27,70 @@
                 <table>
                   @each(user in obj.up)
                     <tr>
-                    <th>{{user.nomeUsuario}}</th>
-                    <th>{{user.email}}
-                    <th>{{user.matricula}}</th>
-                    <th>{{user.nomePerfil}}</th>
-                    <th>{{ user.statusUsuario}}</th>
-                    <th><form method="POST" action="home/confirma/{{user.id}}?_method=PUT">{{ csrfField() }}<button type="Submit" class="btn btn-primary">Aceitar</button></form></th>
-                    <th><form method="POST" action="home/remove/{{user.id}}?_method=PUT">{{ csrfField() }}<button type="Submit" class="btn btn-primary">Recusar</button></form></th>
+                    <div>Nome do Usuário: {{user.nomeUsuario}}</div>
+                    <div>Email: {{user.email}}</div>
+                    <div>Matrícula: {{user.matricula}}</div>
+                    <div>Perfil: {{user.nomePerfil}}</div>
+                    <div>Interno? {{ user.ehInterno}}</div>
+                    <div>Status: {{ user.statusUsuario}}</div>
+                    <div><form method="POST" action="home/confirma/{{user.id}}?_method=PUT">{{ csrfField() }}<button type="Submit" class="btn btn-primary">Aceitar</button></form></div>
+                    <div><form method="POST" action="home/remove/{{user.id}}?_method=PUT">{{ csrfField() }}<button type="Submit" class="btn btn-primary">Recusar</button></form></div>
                     </tr>
                   @endeach
                 </table>
               @endif
               @if(auth.user.idPerfil==2)
-                <h2>Agendamento de Defesa</h2></br>
-                <div>
-                  @if(flashMessage('successmessage'))
-                    <span class="alert alert-success p-1">{{ flashMessage('successmessage') }}</span>
-                  @endif
-                </div> 
-                  <div class="form-group"> 
-                    <label for="dataDefesa">Data da Defesa</label>
-                    <input type="text" class="form-control" id="local" name="local" value="{{old('local','')}}"  placeholder="Insira o endereço ou link">
-                      {{ elIf('<span class=text-danger>$self</span>', getErrorFor('local'), hasErrorFor('local')) }}
-                  </div>
-                  <div class="form-group">
-                    <label for="local">Local da Defesa</label>
-                    <input type="date" class="form-control" id="dataDefesa" name="dataDefesa" value="{{old('dataDefesa','')}}">
-                      {{ elIf('<span class=text-danger>$self</span>', getErrorFor('dataDefesa'), hasErrorFor('dataDefesa')) }}
-                  </div>
-                  <div class="form-group">
-                    <label for="titulo">Título</label>
-                    <input type="text" class="form-control" id="titulo" name="titulo" value="{{old('titulo','')}}" placeholder="Insira o título do Trabalho">
-                      {{ elIf('<span class=text-danger>$self</span>', getErrorFor('titulo'), hasErrorFor('titulo')) }}
-                  </div>
-                  <div class="form-group">
-                    <label for="descricao">Descricao</label></th>
-                    <input type="text" class="form-control" id="descricao" name="descricao" value="{{old('descricao','')}}">
-                      {{ elIf('<span class=text-danger>$self</span>', getErrorFor('descricao'), hasErrorFor('descricao')) }}
-                  </div>
-                  <div class="form-group">
-                    <label for="tags">Tags</label></th>
-                    <input type="text" class="form-control" id="tags" name="tags" value="{{old('tags','')}}" placeholder="Insira palavras-chave">
-                      {{ elIf('<span class=text-danger>$self</span>', getErrorFor('tags'), hasErrorFor('tags')) }}
-                  </div>
-                  <div class="form-group">
-                    <label for="nomeOrientador">Orientador</label></th>
-                    <input type="text" class="form-control" id="nomeUsuario" name="nomeUsuario" value="{{old('nomeUsuario','')}}" placeholder="Selecione um orientador">
-                      {{ elIf('<span class=text-danger>$self</span>', getErrorFor('nomeUsuario'), hasErrorFor('nomeUsuario')) }}
-                  </div>
-                  <div class="form-group">
-                    <button type="Submit" class="btn btn-primary">Aceitar</button>
-                  </div>
-                <table>
-                  @each(defesa in obj.up)
-                    <tr>
-                    <th>{{defesa.dataDefesa}}</th>
-                    <th>{{defesa.local}}
-                    <th>{{defesa.titulo}}</th>
-                    <th>{{defesa.descricao}}</th>
-                    <th>{{defesa.tags}}</th>
-                    <th>{{defesa.nomeOrientador}}</th>
-                    </tr>
-                    <th><button type="Submit" class="btn btn-primary">Editar</button></form></th>
+                @if(obj.de.idEstudante != auth.user.idPerfil==2)
+                  <h2>Agendamento de Defesa</h2></br>
+                  <form method="POST" action="home/cria/defesa">
+                    {{ csrfField() }}
+                    <div>
+                      @if(flashMessage('successmessage'))
+                        <span class="alert alert-success p-1">{{ flashMessage('successmessage') }}</span>
+                      @endif
+                    </div> 
+                    <div class="form-group"> 
+                      <label for="dataDefesa">Data da Defesa</label>
+                      <input type="date" class="form-control" id="dataDefesa" name="dataDefesa" value="{{old('dataDefesa','')}}">
+                        {{ elIf('<span class=text-danger>$self</span>', getErrorFor('dataDefesa'), hasErrorFor('dataDefesa')) }}
+                    </div>
+                    <div class="form-group">
+                      <label for="local">Local da Defesa</label>
+                      <input type="text" class="form-control" id="local" name="local" value="{{old('local','')}}" placeholder="Insira o endereço ou link">
+                        {{ elIf('<span class=text-danger>$self</span>', getErrorFor('local'), hasErrorFor('local')) }}
+                    </div>
+                    <div class="form-group">
+                      <label for="titulo">Título</label>
+                      <input type="text" class="form-control" id="titulo" name="titulo" value="{{old('titulo','')}}" placeholder="Insira o título do Trabalho">
+                        {{ elIf('<span class=text-danger>$self</span>', getErrorFor('titulo'), hasErrorFor('titulo')) }}
+                    </div>
+                    <div class="form-group">
+                      <label for="descricao">Descrição</label></th>
+                      <input type="text" class="form-control" id="descricao" name="descricao" value="{{old('descricao','')}}">
+                        {{ elIf('<span class=text-danger>$self</span>', getErrorFor('descricao'), hasErrorFor('descricao')) }}
+                    </div>
+                    <div class="form-group">
+                      <label for="tags">Tags</label></th>
+                      <input type="text" class="form-control" id="tags" name="tags" value="{{old('tags','')}}" placeholder="Insira palavras-chave">
+                        {{ elIf('<span class=text-danger>$self</span>', getErrorFor('tags'), hasErrorFor('tags')) }}
+                    </div>
+                    <div class="form-group">
+                      <button type="Submit" class="btn btn-primary">Criar Defesa</button></br>
+                    </div>
+                  </form>
+                @endif
+                  @each(defesa in obj.de)
+                    <div>Data: {{defesa.dataDefesa}}</div>
+                    <div>Local: {{defesa.local}}</div>
+                    <div>Título: {{defesa.titulo}}</div>
+                    <div>Descrição: {{defesa.descricao}}</div>
+                    <div>Tags: {{defesa.tags}}</div>
+                    <div>Status: {{defesa.statusDefesa}}</div>
+                    <div>Professor Orientador: {{defesa.nomeOrientador}}</div>
+                    <div>Professor Convidado A: {{defesa.nomeConvidadoA}}</div>
+                    <div>Professor Convidado B: {{defesa.nomeConvidadoB}}</div>
+                    <button type="Submit" class="btn btn-primary">Editar</button>
                   @endeach
-                </table>
               @endif
             @endloggedIn
           </div>
