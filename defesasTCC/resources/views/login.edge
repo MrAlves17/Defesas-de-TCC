@@ -36,6 +36,13 @@
             <button type="Submit" class="btn btn-primary">Entrar</button>
           </div>
       </form>
+      <div>
+      </br><p>Não é Cadastrado?</p></br>
+        <form method="ON" action="{{route('auth.postRegister')}}">
+          {{ csrfField() }}
+          <button type="Submit" class="btn btn-primary">Cadastrar-me</button>
+        </form>
+      </div>
     </div>
   </div>
   </div>  

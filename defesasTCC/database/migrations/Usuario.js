@@ -13,6 +13,7 @@ class UsuarioSchema extends Schema {
       table.string('matricula').unique()
       table.integer('idPerfil').unsigned().references('idPerfil').inTable('Perfil').notNullable()
       table.bool('ehInterno').notNullable()
+      table.string('statusUsuario', 255).notNullable().defaultTo('Pendente')
       table.timestamps()
     })
   }
