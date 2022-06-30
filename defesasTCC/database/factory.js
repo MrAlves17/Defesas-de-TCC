@@ -20,7 +20,8 @@ Factory.blueprint('App/Models/User', (aaaa, index, data) => {
     senha: data.senha,
     matricula: data.matricula,
     idPerfil: data.idPerfil,
-    ehInterno: data.ehInterno
+    ehInterno: data.ehInterno,
+    statusUsuario: data.statusUsuario
   }
 })
 

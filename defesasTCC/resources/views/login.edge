@@ -14,7 +14,7 @@
   <div class="container">
   <div class="row">
     <div class="col-10 shadow bg-white mt-5 mx-5 p-3 rounded offset-md-4">
-      <form method="POST" action="{{route('auth.postLogin')}}">
+      <form id="entrar" method="POST" action="{{route('auth.postLogin')}}">
         {{ csrfField() }}
           <div>
             @if(flashMessage('successmessage'))
@@ -38,7 +38,7 @@
       </form>
       <div>
       </br><p>Não é Cadastrado?</p></br>
-        <form method="ON" action="{{route('auth.postRegister')}}">
+        <form id="cadastrar" method="ON" action="{{route('auth.postRegister')}}">
           {{ csrfField() }}
           <button type="Submit" class="btn btn-primary">Cadastrar-me</button>
         </form>
