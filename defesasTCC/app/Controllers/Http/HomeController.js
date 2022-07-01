@@ -11,19 +11,21 @@ class HomeController {
     async view( {auth, view, response} ){
         const usuariosPendentes = await Database.from('Usuario').join('Perfil','Usuario.idPerfil','=','Perfil.idPerfil').select('Usuario.*').select('Perfil.nomePerfil').where('statusUsuario', 'like', '%Pendente%')
         const obj = {up: usuariosPendentes}
-        return await view.render('home',{obj})
+        return await view.render('/home',{obj})
     }
-    async postConfirmRegister({ view, auth, response, request, params:id }){
+    async postConfirmRegister({ response, params:id, session }){
         const usuarioPendente = await User.findBy('id',id.idUsuario)
         await usuarioPendente.merge({statusUsuario:'Ativo'})
         await usuarioPendente.save()
-        return await view.render('home')      
+        session.flash({ successmessage: "Cadastro de "+usuarioPendente.nomeUsuario+" aceito"})
+        return await response.route('/home')      
     }
-    async postDenyRegister({ view, auth, response, request, params:id }){
+    async postDenyRegister({ response, params:id, session }){
         const usuarioPendente = await User.findBy('id',id.idUsuario)
         await usuarioPendente.delete()
         await usuarioPendente.save()
-        return await view.render('home')   
+        session.flash({ successmessage: "Cadastro de "+usuarioPendente.nomeUsuario+" recusado"})
+        return await response.route('/home')   
     }
 
 }
