@@ -245,3 +245,79 @@ test('verifica se o administrador consegue recusar cadastros pendentes após log
 
 }).timeout(0)
 
+test('verifica se o estudante consegue cadastrar defesa após logar no sistema', async ({ browser }) => {
+	
+	// Dado que temos todos os perfis
+	await Factory.model('App/Models/Perfil').create({nomePerfil: 'Administrador'})
+	await Factory.model('App/Models/Perfil').create({nomePerfil: 'Estudante'})
+	await Factory.model('App/Models/Perfil').create({nomePerfil: 'Professor'})
+	await Factory.model('App/Models/Perfil').create({nomePerfil: 'Secretaria'})
+
+	// Dado que temos um estudante
+	const senha = faker.internet.password()
+	const estudante = await Factory.model('App/Models/User').create({ 
+		senha: senha,
+		idPerfil: 2,
+		ehInterno: 1,
+		statusUsuario: 'Ativo'
+	})
+
+	const page = await browser.visit('/')
+
+	await page
+		.hasElement('button[id="entrar"]')
+
+	await page
+	  .type('[name="email"]', estudante.email)
+	  .type('[name="senha"]', senha)
+	  .click('button[id="entrar"]')
+	  .waitForNavigation()
+  
+	// We expect to be on the homepage
+	await page.assertPath('/home')
+
+	await page.assertHas('Agendamento de Defesa')
+
+	await page
+		.hasElement('button[name="criaDefesa"]')
+
+	await page
+		.type('[name="dataDefesa"', faker.date.future())
+		.type('[name="local"', 'PAF1 - 202')
+		.type('[name="titulo"', 'Roteamento de Veículos')
+		.type('[name="descricao"', 'Rotear veículos é legal')
+		.type('[name="tags"', '#otimizacao, #roteamento')
+		.click('button[name="criaDefesa"')
+		.waitForNavigation()
+
+	await page.assertPath('/home')
+
+	await page.assertHas('Defesa Criada com Sucesso.')
+
+	const defesas = await Database
+							.from('Defesa')
+							.join('Banca','Defesa.idBanca','=','Banca.idBanca')
+							.leftJoin('Usuario as PO','Banca.IdOrientador','=','PO.id')
+							.leftJoin('Usuario as CA','Banca.IdConvidadoA','=','CA.id')
+							.leftJoin('Usuario as CB','Banca.IdConvidadoB','=','CB.id')
+							.select('Defesa.*')
+							.select('PO.nomeUsuario as nomeOrientador')
+							.select('CA.nomeUsuario as nomeConvidadoA')
+							.select('CB.nomeUsuario as nomeConvidadoB')
+							.select('Banca.*')
+							.where('idEstudante','=',estudante.id)
+
+	const defesa = defesas[0]
+	const defesaDetails = await page
+		.assertHas("Data: "+ defesa.dataDefesa +"\n"
+				 + "Local: "+ defesa.local +"\n"
+				 + "Título: "+ defesa.titulo +"\n"
+				 + "Descrição: "+ defesa.descricao +"\n"
+				 + "Tags: "+ defesa.tags +"\n"
+				 + "Status: "+ defesa.statusDefesa +"\n"
+				 + "Professor Orientador: "+ defesa.nomeOrientador +"\n"
+				 + "Professor Convidado A: "+ defesa.nomeConvidadoA +"\n"
+				 + "Professor Convidado B: "+ defesa.nomeConvidadoB)
+				 
+
+}).timeout(0)

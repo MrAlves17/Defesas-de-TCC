@@ -36,7 +36,7 @@ class HomeController {
                     .where('idEstudante','=',auth.user.id)
             obj = {de: defesaExistente}
         }
-        return await view.render('/home',{obj})
+        return await view.render('home',{obj})
     }
     async postConfirmRegister({ response, params:id, session }){
         const usuarioPendente = await User.findBy('id',id.idUsuario)
@@ -62,7 +62,6 @@ class HomeController {
             idConvidadoB: parseInt(all.idConvidadoB),
             statusConvidadoB: all.statusConvidadoB
         })
-        console.log(banca)
         const defesa = await Defesa.create({
             dataDefesa: all.dataDefesa,
             local: all.local,
@@ -72,7 +71,7 @@ class HomeController {
             idEstudante: auth.user.id,
             idBanca: banca.id  
         })
-        session.flash({ successmessage: 'Defesa Criada com Sucesso. '})
+        session.flash({ successmessage: 'Defesa Criada com Sucesso.'})
         return response.route('/home');
     }
 }
