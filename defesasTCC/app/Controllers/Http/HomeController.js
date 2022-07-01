@@ -91,18 +91,31 @@ class HomeController {
         const obj = {defesa: defesa}
         return await view.render('edit',{obj})
     }
-    async alteraDefesa({ request, auth, params: d, view} ){
+    async alteraDefesa({ request, auth, params: d, view, session, response } ){
         const all = request.all()
-        const defesa = await Defesa.findBy('idDefesa',d.idDefesa)
-        await defesa.merge({
+        const defesa = await Defesa.findByOrFail('idDefesa',d.idDefesa)
+        await Defesa.query().where('idDefesa',d.idDefesa).update({
+            idDefesa: defesa.idDefesa,
             dataDefesa: all.dataDefesa,
             local: all.local,
             titulo: all.titulo,
             descricao: all.descricao,
             tags: all.tags
         })
-        console.log(defesa)
-        await defesa.save()
+        // const defesa = await Defesa.findByOrFail('idDefesa',d.idDefesa)
+        // console.log('defesa 1')
+        // console.log(defesa)
+        // await defesa.merge({
+        //     idDefesa: defesa.idDefesa,
+        //     dataDefesa: all.dataDefesa,
+        //     local: all.local,
+        //     titulo: all.titulo,
+        //     descricao: all.descricao,
+        //     tags: all.tags
+        // })
+        // console.log('defesa 2')
+        // console.log(defesa)
+        // await defesa.save()
         session.flash({ successmessage: 'Defesa Atualizada com Sucesso.'})
         return response.route('/home');
     }
