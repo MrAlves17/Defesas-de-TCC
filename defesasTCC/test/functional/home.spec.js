@@ -56,8 +56,13 @@ test('verifica se o administrador consegue ver lista de usuários pendentes apó
 								.from('Usuario')
 								.join('Perfil', 'Perfil.idPerfil', '=', 'Usuario.idPerfil')
 								.where('Usuario.nomeUsuario', '=', up.nomeUsuario)
-		
-		await page.assertHas(up.nomeUsuario+'\t'+up.email+'\t'+up.matricula+'\t'+c[0].nomePerfil)
+		let userDetails = "Nome do Usuário: "+up.nomeUsuario+'\n'
+						+ "Email: "+up.email+'\n'
+						+ "Matrícula: "+up.matricula+'\n'
+						+ "Perfil: "+c[0].nomePerfil+'\n'
+						+ "Interno? "+up.ehInterno+'\n'
+						+ "Status: "+up.statusUsuario+'\n'
+		await page.assertHas(userDetails)
 	}
 
 }).timeout(0)
@@ -88,8 +93,8 @@ test('verifica se o administrador consegue aprovar cadastros pendentes após log
 	// And we are on the login page
 	const page = await browser.visit('/')
 
-  await page
-    .hasElement('button[id="entrar"]')
+	await page
+		.hasElement('button[id="entrar"]')
 	// When we fill and send the login form
 	await page
 	  .type('[name="email"]', admin.email)
@@ -100,30 +105,36 @@ test('verifica se o administrador consegue aprovar cadastros pendentes após log
 	// We expect to be on the homepage
 	await page.assertPath('/home')
 
-  const uid = 1
+  	const uid = 1
 
-  const up = usuariosPendentes[uid]
-  const c1 = await Database
-								.select('nomePerfil')
-								.from('Usuario')
-								.join('Perfil', 'Perfil.idPerfil', '=', 'Usuario.idPerfil')
-								.where('Usuario.id', '=', up.id)
+	const up = usuariosPendentes[uid]
+	const c1 = await Database
+						.select('nomePerfil')
+						.from('Usuario')
+						.join('Perfil', 'Perfil.idPerfil', '=', 'Usuario.idPerfil')
+						.where('Usuario.id', '=', up.id)
   
-  let userDetails = up.nomeUsuario+'\t'+up.email+'\t'+up.matricula+'\t'+c1[0].nomePerfil
-  await page.assertHas(userDetails)
+	let userDetails = "Nome do Usuário: "+up.nomeUsuario+'\n'
+					+ "Email: "+up.email+'\n'
+					+ "Matrícula: "+up.matricula+'\n'
+					+ "Perfil: "+c1[0].nomePerfil+'\n'
+					+ "Interno? "+up.ehInterno+'\n'
+					+ "Status: "+up.statusUsuario+'\n'
 
-  await page
-    .hasElement('button[name="aceitar-'+usuariosPendentes[uid].id+'"]')
+	await page.assertHas(userDetails)
 
-  await page
-    .click('button[name="aceitar-'+usuariosPendentes[uid].id+'"]')
-    .waitForNavigation()
+	await page
+		.hasElement('button[name="aceitar-'+usuariosPendentes[uid].id+'"]')
 
-  await page.assertPath('/home')
+	await page
+		.click('button[name="aceitar-'+usuariosPendentes[uid].id+'"]')
+		.waitForNavigation()
 
-  await assert.notInclude(await page.getText(), userDetails)
+	await page.assertPath('/home')
 
-  await page.assertHas("Cadastro de "+up.nomeUsuario+" aceito")
+	await assert.notInclude(await page.getText(), userDetails)
+
+	await page.assertHas("Cadastro de "+up.nomeUsuario+" aceito")
 
 	for(let i=0; i<3; i++){
     if(uid == i) continue
@@ -134,7 +145,13 @@ test('verifica se o administrador consegue aprovar cadastros pendentes após log
 								.join('Perfil', 'Perfil.idPerfil', '=', 'Usuario.idPerfil')
 								.where('Usuario.id', '=', up.id)
 		
-		await page.assertHas(up.nomeUsuario+'\t'+up.email+'\t'+up.matricula+'\t'+c2[0].nomePerfil)
+		let userDetails = "Nome do Usuário: "+up.nomeUsuario+'\n'
+						+ "Email: "+up.email+'\n'
+						+ "Matrícula: "+up.matricula+'\n'
+						+ "Perfil: "+c2[0].nomePerfil+'\n'
+						+ "Interno? "+up.ehInterno+'\n'
+						+ "Status: "+up.statusUsuario+'\n'
+		await page.assertHas(userDetails)
 	}
 
 }).timeout(0)
@@ -165,7 +182,7 @@ test('verifica se o administrador consegue recusar cadastros pendentes após log
 	// And we are on the login page
 	const page = await browser.visit('/')
 
-  await page
+  	await page
    		.hasElement('button[id="entrar"]')
 
 	// When we fill and send the login form
@@ -178,29 +195,35 @@ test('verifica se o administrador consegue recusar cadastros pendentes após log
 	// We expect to be on the homepage
 	await page.assertPath('/home')
 
-  const uid = 1
-  const up = usuariosPendentes[uid]
-  const c1 = await Database
-								.select('nomePerfil')
-								.from('Usuario')
-								.join('Perfil', 'Perfil.idPerfil', '=', 'Usuario.idPerfil')
-								.where('Usuario.id', '=', up.id)
+	const uid = 1
+	const up = usuariosPendentes[uid]
+	const c1 = await Database
+									.select('nomePerfil')
+									.from('Usuario')
+									.join('Perfil', 'Perfil.idPerfil', '=', 'Usuario.idPerfil')
+									.where('Usuario.id', '=', up.id)
 
-  let userDetails = up.nomeUsuario+'\t'+up.email+'\t'+up.matricula+'\t'+c1[0].nomePerfil
-  await page.assertHas(userDetails)
+	let userDetails = "Nome do Usuário: "+up.nomeUsuario+'\n'
+				    + "Email: "+up.email+'\n'
+				    + "Matrícula: "+up.matricula+'\n'
+				    + "Perfil: "+c1[0].nomePerfil+'\n'
+				    + "Interno? "+up.ehInterno+'\n'
+				    + "Status: "+up.statusUsuario+'\n'
 
-  await page
-    .hasElement('button[name="recusar-'+usuariosPendentes[uid].id+'"]')
+	await page.assertHas(userDetails)
 
-  await page
-    .click('button[name="recusar-'+usuariosPendentes[uid].id+'"]')
-    .waitForNavigation()
+	await page
+		.hasElement('button[name="recusar-'+usuariosPendentes[uid].id+'"]')
 
-  await page.assertPath('/home')
+	await page
+		.click('button[name="recusar-'+usuariosPendentes[uid].id+'"]')
+		.waitForNavigation()
 
-  await assert.notInclude(await page.getText(), userDetails)
+	await page.assertPath('/home')
 
-  await page.assertHas("Cadastro de "+up.nomeUsuario+" recusado")
+	await assert.notInclude(await page.getText(), userDetails)
+
+	await page.assertHas("Cadastro de "+up.nomeUsuario+" recusado")
 
 	for(let i=0; i<3; i++){
     if(uid == i) continue
@@ -211,7 +234,13 @@ test('verifica se o administrador consegue recusar cadastros pendentes após log
 								.join('Perfil', 'Perfil.idPerfil', '=', 'Usuario.idPerfil')
 								.where('Usuario.id', '=', up.id)
 		
-		await page.assertHas(up.nomeUsuario+'\t'+up.email+'\t'+up.matricula+'\t'+c2[0].nomePerfil)
+		let userDetails = "Nome do Usuário: "+up.nomeUsuario+'\n'
+						+ "Email: "+up.email+'\n'
+						+ "Matrícula: "+up.matricula+'\n'
+						+ "Perfil: "+c2[0].nomePerfil+'\n'
+						+ "Interno? "+up.ehInterno+'\n'
+						+ "Status: "+up.statusUsuario+'\n'
+		await page.assertHas(userDetails)
 	}
 
 }).timeout(0)

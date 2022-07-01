@@ -10,7 +10,7 @@ const faker = fake_obj.faker
 trait('Test/Browser')
 trait('DatabaseTransactions')
 
-test('verifica se usuário ativo loga após apresentar credenciais, se aparece seu nome na home e desloga ao acessar \'/logout\'', async ({ browser }) => {
+test('verifica se usuário ativo loga após apresentar credenciais, se aparece seu nome na home e desloga', async ({ browser }) => {
 	// Given we have a user
 	const senha = faker.internet.password()
 	const user = await Factory.model('App/Models/User').create({senha: senha, statusUsuario: 'Ativo'})
@@ -32,9 +32,13 @@ test('verifica se usuário ativo loga após apresentar credenciais, se aparece s
 
 	await page.assertHas(user.nomeUsuario)
 
-	const page2 = await browser.visit('/logout')
+	await page
+    	.hasElement('button[id="sair"]')
+	await page
+		.click('button[id="sair"]')
+		.waitForNavigation()
 
-	await page2.assertPath('/')
+	await page.assertPath('/')
 
 }).timeout(0)
 

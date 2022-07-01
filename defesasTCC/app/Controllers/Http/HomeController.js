@@ -36,7 +36,6 @@ class HomeController {
                     .where('idEstudante','=',auth.user.id)
             obj = {de: defesaExistente}
         }
-        console.log(obj)
         return await view.render('/home',{obj})
     }
     async postConfirmRegister({ response, params:id, session }){
