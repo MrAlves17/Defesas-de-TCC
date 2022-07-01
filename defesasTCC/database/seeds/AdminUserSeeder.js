@@ -23,7 +23,8 @@ class AdminUserSeeder {
       senha: '123456',
       matricula: '00000000',
       idPerfil: 1,
-      ehInterno: true
+      ehInterno: true,
+      statusUsuario: 'Ativo'
     })
   }
 }

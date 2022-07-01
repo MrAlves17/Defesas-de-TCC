@@ -15,9 +15,26 @@
       --}}
       @loggedIn
         <p> Bem vindo, {{ auth.user.nomeUsuario }} </p>
-        <h1> Bem vindo, {{ auth.user.nomeUsuario }} </h1>
-        @if(auth.user.idPerfil == 1)
-          <p> {{obj.nome}}</p>
+        @if(auth.user.idPerfil==1)
+        <h2>Pendências de Cadastro de Usuário</h2>
+        <div>
+          @if(flashMessage('successmessage'))
+            <span class="alert alert-success p-1">{{ flashMessage('successmessage') }}</span>
+          @endif
+        </div>
+          <table>
+            @each(user in obj.up)
+              <tr>
+              <th>{{user.nomeUsuario}}</th>
+              <th>{{user.email}}
+              <th>{{user.matricula}}</th>
+              <th>{{user.nomePerfil}}</th>
+              <th>{{ user.statusUsuario}}</th>
+              <th><form method="POST" action="home/confirma/{{user.id}}?_method=PUT">{{ csrfField() }}<button id="aceitar-{{user.id}}" name="aceitar-{{user.id}}" type="Submit" class="btn btn-primary">Aceitar</button></form></th>
+              <th><form method="POST" action="home/remove/{{user.id}}?_method=PUT">{{ csrfField() }}<button id="recusar-{{user.id}}" name="recusar-{{user.id}}" type="Submit" class="btn btn-primary">Recusar</button></form></th>
+              </tr>
+            @endeach
+          </table>
         @endif
       @endloggedIn
     </div>
