@@ -28,6 +28,7 @@
     "@adonisjs/shield": "^1.0.8",
     "@adonisjs/vow": "^1.0.17",
     "@adonisjs/vow-browser": "^1.0.7",
+    "lodash": "^4.17.21",
     "sqlite": "^4.1.1",
     "sqlite3": "^5.0.8"
   },
