@@ -191,7 +191,7 @@ class HomeController {
         const obj = {defesa: defesa}
         return await view.render('edit',{obj})
     }
-    async alteraDefesa({ request, auth, params: d, view, session, response } ){
+    async alteraDefesa({ request, auth, params: d, view, session, response }){
         const all = request.all()
         const defesa = await Defesa.findByOrFail('idDefesa',d.idDefesa)
         await Defesa.query().where('idDefesa',d.idDefesa).update({
@@ -227,6 +227,43 @@ class HomeController {
         }
         session.flash({ successmessage: 'Defesa Atualizada com Sucesso.'})
         return response.route('/home');
+    }
+    async confirmaDefesa({ request, auth, params: d, view, session, response }) {
+        if(auth.user.idPerfil == 3){
+            const idProfessor = 
+                await Database
+                    .from('Banca')
+                    .select('idOrientador')
+                    .select('idConvidadoA')
+                    .select('idConvidadoB')
+                    .where('idBanca',d.idBanca)
+            if(auth.user.id == idProfessor[0].idOrientador){
+                await Banca.query().where('idBanca',d.idBanca).update({
+                    statusOrientador: 'Confirmado'
+                })
+                session.flash({ successmessage: 'Participação na Banca Confirmada com sucesso.'})
+                return response.route('/home');
+            }
+        }
+    }
+    async recusaDefesa({ request, auth, params: d, view, session, response }) {
+        if(auth.user.idPerfil == 3){
+            const idProfessor = 
+                await Database
+                    .from('Banca')
+                    .select('idOrientador')
+                    .select('idConvidadoA')
+                    .select('idConvidadoB')
+                    .where('idBanca',d.idBanca)
+            if(auth.user.id == idProfessor[0].idOrientador){
+                await Banca.query().where('idBanca',d.idBanca).update({
+                    idOrientador: null,
+                    statusOrientador: null,
+                })
+                session.flash({ successmessage: 'Participação na Banca Confirmada com sucesso.'})
+                return response.route('/home'); 
+            }
+        }
     }
 }
 
