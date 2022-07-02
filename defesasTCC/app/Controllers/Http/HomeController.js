@@ -36,7 +36,6 @@ class HomeController {
                     .where('idEstudante','=',auth.user.id)
             obj = {de: defesaExistente}
         }
-        console.log(obj)
         return await view.render('home',{obj})
     }
     async postConfirmRegister({ view, auth, response, request, params:u }){
@@ -124,7 +123,6 @@ class HomeController {
                     .select('CB.nomeUsuario as nomeConvidadoB')
                     .select('Banca.*')
                     .where('idDefesa','=',defe.idDefesa)
-                    console.log(defesa)
         const obj = {defesa: defesa}
         return await view.render('edit',{obj})
     }
