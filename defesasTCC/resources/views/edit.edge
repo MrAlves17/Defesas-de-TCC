@@ -75,12 +75,12 @@
                       <span class="alert alert-success p-1">{{ flashMessage('successmessage') }}</span>
                   @endif
                   <div class="form-group">
-                    <label for="emailConvidadoA">Email do Orientador</label></th>
+                    <label for="emailConvidadoA">Email do primeiro Professor convidado</label></th>
                     <input type="email" class="form-control" id="emailConvidadoA" name="emailConvidadoA" value="{{old('emailConvidadoA','')}}" placeholder="Insira o email do primeiro Professor convidado">
                     {{ elIf('<span class=text-danger>$self</span>', getErrorFor('emailConvidadoA'), hasErrorFor('emailConvidadoA')) }}
                   </div>
                   <div class="form-group">
-                    <label for="emailConvidadoB">Email do Orientador</label></th>
+                    <label for="emailConvidadoB">Email do segundo Professor convidado</label></th>
                     <input type="email" class="form-control" id="emailConvidadoB" name="emailConvidadoB" value="{{old('emailConvidadoB','')}}" placeholder="Insira o email do segundo Professor convidado">
                     {{ elIf('<span class=text-danger>$self</span>', getErrorFor('emailConvidadoB'), hasErrorFor('emailConvidadoB')) }}
                   </div>
