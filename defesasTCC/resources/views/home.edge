@@ -40,7 +40,7 @@
                 </table>
               @endif
               @if(auth.user.idPerfil==2)
-                @if(obj.de.idEstudante != auth.user.idPerfil==2)
+                @if(obj.de.idEstudante != auth.user.id)
                   <h2>Agendamento de Defesa</h2></br>
                   <form method="POST" action="home/cria/defesa">
                     {{ csrfField() }}
@@ -73,6 +73,11 @@
                       <label for="tags">Tags</label></th>
                       <input type="text" class="form-control" id="tags" name="tags" value="{{old('tags','')}}" placeholder="Insira palavras-chave">
                         {{ elIf('<span class=text-danger>$self</span>', getErrorFor('tags'), hasErrorFor('tags')) }}
+                    </div>
+                    <div class="form-group">
+                      <label for="emailOrientador">Email do Orientador</label></th>
+                      <input type="email" class="form-control" id="emailOrientador" name="emailOrientador" value="{{old('emailOrientador','')}}" placeholder="Insira o email do seu Orientador">
+                        {{ elIf('<span class=text-danger>$self</span>', getErrorFor('emailOrientador'), hasErrorFor('emailOrientador')) }}
                     </div>
                     <div class="form-group">
                       <button type="Submit" class="btn btn-primary">Criar Defesa</button></br>

@@ -51,16 +51,53 @@ class HomeController {
         await usuarioPendente.save()
         return await view.render('home')   
     }
+    async validaProfessor({email: e,idPerfil: p}){
+        const professor =
+        await Database
+            .from('Usuario')
+            .select('idUsuario')
+            .where((query) => {
+                query
+                .where('idPerfil','=',p)
+                .where('ehInterno','=',1)
+                .where('email','like',e)
+              })
+        return professor
+    }
     async postCriaDefesa({ auth, request, session, response }) {
-        const all = request.all()       
-        const banca = await Banca.create({
-            idOrientador: parseInt(all.idOrientador),
-            statusOrientador: all.statusOrientador,
-            idConvidadoA: parseInt(all.idConvidadoA),
-            statusConvidadoA: all.statusConvidadoA,
-            idConvidadoB: parseInt(all.idConvidadoB),
-            statusConvidadoB: all.statusConvidadoB
-        })
+        const all = request.all()
+        const orientador = await Database
+            .from('Usuario')
+            .select('id')
+            .select('nomeUsuario')
+            .where((query) => {
+                query
+                .where('idPerfil','=',3)
+                .where('ehInterno','=',1)
+                .where('email','like',all.emailOrientador)
+            })
+        let banca
+        let erroOrientador = ''
+        if (orientador[0] == undefined){
+            erroOrientador = 'O Orientador informado não está presente em nosso banco.Verifique a ortografia ou entre em contato com ele para saber se ele se encontra no sistema.'
+            banca = await Banca.create({
+                idOrientador: null,
+                statusOrientador: null,
+                idConvidadoA: null,
+                statusConvidadoA: null,
+                idConvidadoB: null,
+                statusConvidadoB: null
+            })
+        }else{
+            banca = await Banca.create({
+                idOrientador: orientador[0].id,
+                statusOrientador: 'Aprovação Pendente',
+                idConvidadoA: null,
+                statusConvidadoA: null,
+                idConvidadoB: null,
+                statusConvidadoB: null
+            })
+        }
         const defesa = await Defesa.create({
             dataDefesa: all.dataDefesa,
             local: all.local,
@@ -70,7 +107,7 @@ class HomeController {
             idEstudante: auth.user.id,
             idBanca: banca.id  
         })
-        session.flash({ successmessage: 'Defesa Criada com Sucesso. '})
+        session.flash({ successmessage: 'Defesa Criada com Sucesso. ' + erroOrientador})
         return response.route('/home');
     }
     async getDefesa({ auth, params:defe, view }){
@@ -100,22 +137,31 @@ class HomeController {
             local: all.local,
             titulo: all.titulo,
             descricao: all.descricao,
-            tags: all.tags
+            tags: all.tags,
         })
-        // const defesa = await Defesa.findByOrFail('idDefesa',d.idDefesa)
-        // console.log('defesa 1')
-        // console.log(defesa)
-        // await defesa.merge({
-        //     idDefesa: defesa.idDefesa,
-        //     dataDefesa: all.dataDefesa,
-        //     local: all.local,
-        //     titulo: all.titulo,
-        //     descricao: all.descricao,
-        //     tags: all.tags
-        // })
-        // console.log('defesa 2')
-        // console.log(defesa)
-        // await defesa.save()
+        const orientador = await Database
+            .from('Usuario')
+            .select('id')
+            .select('nomeUsuario')
+            .where((query) => {
+                query
+                .where('idPerfil','=',3)
+                .where('ehInterno','=',1)
+                .where('email','like',all.emailOrientador)
+            })
+        let erroOrientador = ''
+        if (orientador[0] == undefined){
+            erroOrientador = 'O Orientador informado não está no sistema. Verifique a ortografia ou entre em contato com ele para saber se ele se encontra no sistema.'
+        }else{
+            await Banca.query().where('idBanca',defesa.idBanca).update({
+                idOrientador: orientador[0].id,
+                statusOrientador: 'Aprovação Pendente',
+                idConvidadoA: null,
+                statusConvidadoA: null,
+                idConvidadoB: null,
+                statusConvidadoB: null
+            })
+        }
         session.flash({ successmessage: 'Defesa Atualizada com Sucesso.'})
         return response.route('/home');
     }
