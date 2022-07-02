@@ -22,6 +22,15 @@
             @loggedIn
               <h1> Bem vindo, {{ auth.user.nomeUsuario }} </h1></br>
               <form method="GET" action="logout">{{ csrfField() }}<button type="Submit" class="btn btn-primary">Sair</button></form></br>
+              
+              <h2> Seus dados cadastrais </h2></br>
+                  <div>Nome: {{auth.user.nomeUsuario}}</div>
+                  <div>Email: {{auth.user.email}}</div>
+                  <div>Matricula: {{auth.user.matricula}}</div>
+                  <div>Perfil: {{auth.user.idPerfil}}</div>
+                  <div>Status: {{auth.user.statusUsuario}}</div>
+              </br>
+
               @if(auth.user.idPerfil==1)
               <h2>Pendências de Cadastro de Usuário</h2></br>
                 <table>
@@ -83,6 +92,8 @@
                       <button type="Submit" class="btn btn-primary">Criar Defesa</button></br>
                     </div>
                   </form>
+                </br>
+                <h2> Sua Defesa Cadastada </h2></br>
                 @endif
                   @each(defesa in obj.de)
                     <div>Data: {{defesa.dataDefesa}}</div>
@@ -93,7 +104,7 @@
                     <div>Status: {{defesa.statusDefesa}}</div>
                     <div>Professor Orientador: {{defesa.nomeOrientador}}</div>
                     <div>Professor Convidado A: {{defesa.nomeConvidadoA}}</div>
-                    <div>Professor Convidado B: {{defesa.nomeConvidadoB}}</div>
+                    <div>Professor Convidado B: {{defesa.nomeConvidadoB}}</div></br>
                     <form method="POST" action="home/edita/{{defesa.idDefesa}}?_method=PUT">{{ csrfField() }}<button type="Submit" class="btn btn-primary">Editar</button><form>
                   @endeach
               @endif
