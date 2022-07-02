@@ -30,11 +30,76 @@ class HomeController {
                     .leftJoin('Usuario as CB','Banca.IdConvidadoB','=','CB.id')
                     .select('Defesa.*')
                     .select('PO.nomeUsuario as nomeOrientador')
+                    .select('Banca.statusOrientador as statusOrientador')
                     .select('CA.nomeUsuario as nomeConvidadoA')
+                    .select('Banca.statusConvidadoA as statusConvidadoA')
                     .select('CB.nomeUsuario as nomeConvidadoB')
+                    .select('Banca.statusConvidadoB as statusConvidadoB')
                     .select('Banca.*')
                     .where('idEstudante','=',auth.user.id)
             obj = {de: defesaExistente}
+        } else if (auth.user.idPerfil == 3){
+            const defesasPendentes = 
+                await Database
+                    .from('Defesa')
+                    .join('Banca','Defesa.idBanca','=','Banca.idBanca')
+                    .leftJoin('Usuario as PO','Banca.IdOrientador','=','PO.id')
+                    .leftJoin('Usuario as CA','Banca.IdConvidadoA','=','CA.id')
+                    .leftJoin('Usuario as CB','Banca.IdConvidadoB','=','CB.id')
+                    .select('Defesa.*')
+                    .select('PO.nomeUsuario as nomeOrientador')
+                    .select('Banca.statusOrientador as statusOrientador')
+                    .select('CA.nomeUsuario as nomeConvidadoA')
+                    .select('Banca.statusConvidadoA as statusConvidadoA')
+                    .select('CB.nomeUsuario as nomeConvidadoB')
+                    .select('Banca.statusConvidadoB as statusConvidadoB')
+                    .select('Banca.*')
+                    .where((query) => {
+                        query
+                        .where('Po.id','=',auth.user.id)
+                        .where('Banca.statusOrientador','=','Aprovação Pendente')
+                    })
+                    .orWhere((query) => {
+                        query
+                          .where('CA.id','=',auth.user.id)
+                          .where('Banca.statusConvidadoA','=','Aprovação Pendente')
+                    })
+                    .orWhere((query) => {
+                        query
+                          .where('CB.id','=',auth.user.id)
+                          .where('Banca.statusConvidadoB','=','Aprovação Pendente')
+                    })
+            const defesasConfirmadas = 
+                await Database
+                    .from('Defesa')
+                    .join('Banca','Defesa.idBanca','=','Banca.idBanca')
+                    .leftJoin('Usuario as PO','Banca.IdOrientador','=','PO.id')
+                    .leftJoin('Usuario as CA','Banca.IdConvidadoA','=','CA.id')
+                    .leftJoin('Usuario as CB','Banca.IdConvidadoB','=','CB.id')
+                    .select('Defesa.*')
+                    .select('PO.nomeUsuario as nomeOrientador')
+                    .select('Banca.statusOrientador as statusOrientador')
+                    .select('CA.nomeUsuario as nomeConvidadoA')
+                    .select('Banca.statusConvidadoA as statusConvidadoA')
+                    .select('CB.nomeUsuario as nomeConvidadoB')
+                    .select('Banca.statusConvidadoB as statusConvidadoB')
+                    .select('Banca.*')
+                    .where((query) => {
+                        query
+                        .where('Po.id','=',auth.user.id)
+                        .where('Banca.statusOrientador','=','Confirmado')
+                    })
+                    .orWhere((query) => {
+                        query
+                          .where('CA.id','=',auth.user.id)
+                          .where('Banca.statusConvidadoA','=','Confirmado')
+                    })
+                    .orWhere((query) => {
+                        query
+                          .where('CB.id','=',auth.user.id)
+                          .where('Banca.statusConvidadoB','=','Confirmado')
+                    })
+            obj = {dep: defesasPendentes, dec: defesasConfirmadas}
         }
         return await view.render('home',{obj})
     }

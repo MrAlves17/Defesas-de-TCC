@@ -60,7 +60,7 @@
                     </div> 
                     <div class="form-group"> 
                       <label for="dataDefesa">Data da Defesa</label>
-                      <input type="date" class="form-control" id="dataDefesa" name="dataDefesa" value="{{old('dataDefesa','')}}">
+                      <input type="datetime-local" class="form-control" id="dataDefesa" name="dataDefesa" value="{{old('dataDefesa','')}}">
                         {{ elIf('<span class=text-danger>$self</span>', getErrorFor('dataDefesa'), hasErrorFor('dataDefesa')) }}
                     </div>
                     <div class="form-group">
@@ -93,8 +93,8 @@
                     </div>
                   </form>
                 </br>
-                <h2> Sua Defesa Cadastada </h2></br>
                 @endif
+                <h2> Sua Defesa Cadastrada </h2></br>
                   @each(defesa in obj.de)
                     <div>Data: {{defesa.dataDefesa}}</div>
                     <div>Local: {{defesa.local}}</div>
@@ -103,8 +103,45 @@
                     <div>Tags: {{defesa.tags}}</div>
                     <div>Status: {{defesa.statusDefesa}}</div>
                     <div>Professor Orientador: {{defesa.nomeOrientador}}</div>
+                    <div>Status do Orientador: {{defesa.statusOrientador}}</div>
                     <div>Professor Convidado A: {{defesa.nomeConvidadoA}}</div>
-                    <div>Professor Convidado B: {{defesa.nomeConvidadoB}}</div></br>
+                    <div>Status do Convidado A: {{defesa.statusConvidadoA}}</div>
+                    <div>Professor Convidado B: {{defesa.nomeConvidadoB}}</div>
+                    <div>Status do Convidado B: {{defesa.statusConvidadoB}}</div>/br>
+                    <form method="POST" action="home/edita/{{defesa.idDefesa}}?_method=PUT">{{ csrfField() }}<button type="Submit" class="btn btn-primary">Editar</button><form>
+                  @endeach
+              @endif
+              @if(auth.user.idPerfil==3)
+                <h2> Suas Defesas Pendentes </h2></br>
+                  @each(defesa in obj.dep)
+                    <div>Data: {{defesa.dataDefesa}}</div>
+                    <div>Local: {{defesa.local}}</div>
+                    <div>Título: {{defesa.titulo}}</div>
+                    <div>Descrição: {{defesa.descricao}}</div>
+                    <div>Tags: {{defesa.tags}}</div>
+                    <div>Status: {{defesa.statusDefesa}}</div>
+                    <div>Professor Orientador: {{defesa.nomeOrientador}}</div>
+                    <div>Status do Orientador: {{defesa.statusOrientador}}</div>
+                    <div>Professor Convidado A: {{defesa.nomeConvidadoA}}</div>
+                    <div>Status do Convidado A: {{defesa.statusConvidadoA}}</div>
+                    <div>Professor Convidado B: {{defesa.nomeConvidadoB}}</div>
+                    <div>Status do Convidado B: {{defesa.statusConvidadoB}}</div></br>
+                    <form method="POST" action="home/edita/{{defesa.idDefesa}}?_method=PUT">{{ csrfField() }}<button type="Submit" class="btn btn-primary">Editar</button><form>
+                  @endeach
+                <h2> </br>Suas Defesas Confirmadas </h2></br>
+                  @each(defesa in obj.dec)
+                    <div>Data: {{defesa.dataDefesa}}</div>
+                    <div>Local: {{defesa.local}}</div>
+                    <div>Título: {{defesa.titulo}}</div>
+                    <div>Descrição: {{defesa.descricao}}</div>
+                    <div>Tags: {{defesa.tags}}</div>
+                    <div>Status: {{defesa.statusDefesa}}</div>
+                    <div>Professor Orientador: {{defesa.nomeOrientador}}</div>
+                    <div>Status do Orientador: {{defesa.statusOrientador}}</div>
+                    <div>Professor Convidado A: {{defesa.nomeConvidadoA}}</div>
+                    <div>Status do Convidado A: {{defesa.statusConvidadoA}}</div>
+                    <div>Professor Convidado B: {{defesa.nomeConvidadoB}}</div>
+                    <div>Status do Convidado B: {{defesa.statusConvidadoB}}</div></br>
                     <form method="POST" action="home/edita/{{defesa.idDefesa}}?_method=PUT">{{ csrfField() }}<button type="Submit" class="btn btn-primary">Editar</button><form>
                   @endeach
               @endif

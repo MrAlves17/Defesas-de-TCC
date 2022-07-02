@@ -33,7 +33,7 @@
                         </div> 
                         <div class="form-group"> 
                           <label for="dataDefesa">Data da Defesa</label>
-                          <input type="date" class="form-control" id="dataDefesa" name="dataDefesa" value="{{old('dataDefesa',obj.defesa[0].dataDefesa)}}">
+                          <input type="datetime-local" class="form-control" id="dataDefesa" name="dataDefesa" value="{{old('dataDefesa',obj.defesa[0].dataDefesa)}}">
                               {{ elIf('<span class=text-danger>$self</span>', getErrorFor('dataDefesa'), hasErrorFor('dataDefesa')) }}
                         </div>
                         <div class="form-group">
