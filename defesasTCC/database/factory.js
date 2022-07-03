@@ -34,7 +34,22 @@ Factory.blueprint('App/Models/Perfil', (aaaa, index, data) => {
 	}
 })
 
-Factory.blueprint('App/Models/Defesa', (aaaa, index, data) => {
+Factory.blueprint('App/Models/Banca', (aaaa, index, data) => {
+	return {
+		idOrientador: 'idOrientador' in data ? data.idOrientador : faker.datatype.number({ min: 0, max: 10}),
+		statusOrientador: 'statusOrientador' in data ? data.statusOrientador : null,
+		idConvidadoA: 'idConvidadoA' in data ? data.idConvidadoA : faker.datatype.number({ min: 0, max: 10}),
+		statusConvidadoA: 'statusConvidadoA' in data ? data.statusConvidadoA : null,
+		idConvidadoB: 'idConvidadoB' in data ? data.idConvidadoB : faker.datatype.number({ min: 0, max: 10}),
+		statusConvidadoB: 'statusConvidadoB' in data ? data.statusConvidadoB : null
+	}
+})
+
+Factory.blueprint('App/Models/Defesa', async (aaaa, index, data) => {
+	if(!('idBanca' in data)){
+		const banca = await Factory.model('App/Models/Banca').create()
+		data['idBanca']  = await banca.id
+	}
 	return { 
 		  dataDefesa: 'dataDefesa' in data ? data.dataDefesa:faker.date.future(),
 		  local: 'local' in data ? data.local : faker.lorem.sentence(3),
@@ -44,16 +59,5 @@ Factory.blueprint('App/Models/Defesa', (aaaa, index, data) => {
 		  idEstudante: 'idEstudante' in data ? data.idEstudante : faker.datatype.number({ min: 0, max: 10}),
 		  idBanca: 'idBanca' in data ? data.idBanca : faker.datatype.number({ min: 0, max: 10}),
 		  statusDefesa: 'statusDefesa' in data ? data.statusDefesa : 'Agendada'
-	}
-})
-
-Factory.blueprint('App/Models/Banca', (aaaa, index, data) => {
-	return {
-		idOrientador: 'idOrientador' in data ? data.idOrientador : faker.datatype.number({ min: 0, max: 10}),
-		statusOrientador: 'statusOrientador' in data ? data.statusOrientador : null,
-		idConvidadoA: 'idConvidadoA' in data ? data.idConvidadoA : faker.datatype.number({ min: 0, max: 10}),
-		statusConvidadoA: 'statusConvidadoA' in data ? data.statusConvidadoA : null,
-		idConvidadoB: 'idConvidadoB' in data ? data.idConvidadoB : faker.datatype.number({ min: 0, max: 10}),
-		statusConvidadoB: 'statusConvidadoB' in data ? data.statusConvidadoB : null
 	}
 })
