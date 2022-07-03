@@ -11,11 +11,12 @@ trait('Test/Browser')
 trait('DatabaseTransactions')
 
 test('verifica se o administrador consegue ver lista de usuários pendentes após logar no sistema', async ({ browser }) => {
-	
-	await Factory.model('App/Models/Perfil').create({nomePerfil: 'Administrador'})
-	await Factory.model('App/Models/Perfil').create({nomePerfil: 'Estudante'})
-	await Factory.model('App/Models/Perfil').create({nomePerfil: 'Professor'})
-	await Factory.model('App/Models/Perfil').create({nomePerfil: 'Secretaria'})
+
+	const perfis = ["Administrador", "Estudante", "Professor", "Secretaria"]
+
+	for (const perfil of perfis) {
+		await Factory.model('App/Models/Perfil').create({nomePerfil: perfil})
+	}
 
 	// Given we have a user
 	const admin = await Factory.model('App/Models/User').create({ 

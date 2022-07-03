@@ -21,7 +21,7 @@
             --}}
             @loggedIn
               <h1> Bem vindo, {{ auth.user.nomeUsuario }} </h1></br>
-              <form method="GET" action="logout">{{ csrfField() }}<button type="Submit" class="btn btn-primary">Sair</button></form></br>
+              <form method="GET" action="/logout/">{{ csrfField() }}<button type="Submit" class="btn btn-primary">Sair</button></form></br>
               @if(auth.user.idPerfil==2)
                   <h2>Agendamento de Defesa</h2></br>
                     <form method="POST" action="/home/edita/defesa/{{obj.defesa[0].idDefesa}}?_method=PUT">
