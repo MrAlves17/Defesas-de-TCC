@@ -309,7 +309,93 @@ test('verifica se o estudante consegue cadastrar defesa após logar no sistema',
 							.where('idEstudante','=',estudante.id)
 
 	const defesa = defesas[0]
-	const defesaDetails = await page
+	await page
+		.assertHas("Data: "+ defesa.dataDefesa +"\n"
+				 + "Local: "+ defesa.local +"\n"
+				 + "Título: "+ defesa.titulo +"\n"
+				 + "Descrição: "+ defesa.descricao +"\n"
+				 + "Tags: "+ defesa.tags +"\n"
+				 + "Status: "+ defesa.statusDefesa +"\n"
+				 + "Professor Orientador: "+ defesa.nomeOrientador +"\n"
+				 + "Professor Convidado A: "+ defesa.nomeConvidadoA +"\n"
+				 + "Professor Convidado B: "+ defesa.nomeConvidadoB)
+				 
+
+}).timeout(0)
+
+test('verifica se o estudante consegue editar defesa após criar defesa', async ({ browser }) => {
+	
+	// Dado que temos todos os perfis
+	await Factory.model('App/Models/Perfil').create({nomePerfil: 'Administrador'})
+	await Factory.model('App/Models/Perfil').create({nomePerfil: 'Estudante'})
+	await Factory.model('App/Models/Perfil').create({nomePerfil: 'Professor'})
+	await Factory.model('App/Models/Perfil').create({nomePerfil: 'Secretaria'})
+
+	// Dado que temos um estudante
+	const senha = faker.internet.password()
+	const estudante = await Factory.model('App/Models/User').create({ 
+		senha: senha,
+		idPerfil: 2,
+		ehInterno: 1,
+		statusUsuario: 'Ativo'
+	})
+
+	let defesa = await Factory.model('App/Models/Defesa').create({idEstudante: estudante.id})
+
+	const page = await browser.visit('/')
+
+	await page
+		.hasElement('button[id="entrar"]')
+
+	await page
+	  .type('[name="email"]', estudante.email)
+	  .type('[name="senha"]', senha)
+	  .click('button[id="entrar"]')
+	  .waitForNavigation()
+  
+	// We expect to be on the homepage
+	await page.assertPath('/home')
+
+	await page
+		.hasElement('button[id="edita-'+defesa.id+'"]')
+
+	await page
+		.click('button[id="edita-'+defesa.id+'"]')
+		.waitForNavigation()
+
+	await page.assertPath('/home/edita/'+defesa.id)
+
+	await page
+		.hasElement('button[name="criaDefesa"]')
+
+	await page
+		.type('[name="dataDefesa"', faker.date.future())
+		.type('[name="local"', 'PAF1 - 202')
+		.type('[name="titulo"', 'Roteamento de Veículos')
+		.type('[name="descricao"', 'Rotear veículos é legal')
+		.type('[name="tags"', '#otimizacao, #roteamento')
+		.click('button[name="salvaDefesa"')
+		.waitForNavigation()
+
+	await page.assertPath('/home')
+
+	await page.assertHas('Defesa Atualizada com Sucesso.')
+
+	const defesas = await Database
+							.from('Defesa')
+							.join('Banca','Defesa.idBanca','=','Banca.idBanca')
+							.leftJoin('Usuario as PO','Banca.IdOrientador','=','PO.id')
+							.leftJoin('Usuario as CA','Banca.IdConvidadoA','=','CA.id')
+							.leftJoin('Usuario as CB','Banca.IdConvidadoB','=','CB.id')
+							.select('Defesa.*')
+							.select('PO.nomeUsuario as nomeOrientador')
+							.select('CA.nomeUsuario as nomeConvidadoA')
+							.select('CB.nomeUsuario as nomeConvidadoB')
+							.select('Banca.*')
+							.where('idEstudante','=',estudante.id)
+
+	defesa = defesas[0]
+	await page
 		.assertHas("Data: "+ defesa.dataDefesa +"\n"
 				 + "Local: "+ defesa.local +"\n"
 				 + "Título: "+ defesa.titulo +"\n"
