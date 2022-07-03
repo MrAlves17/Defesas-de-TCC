@@ -112,6 +112,11 @@
                   @endeach
               @endif
               @if(auth.user.idPerfil==3)
+              <div>
+                @if(flashMessage('successmessage'))
+                  <span class="alert alert-success p-1">{{ flashMessage('successmessage') }}</span>
+                @endif
+              </div> 
                 <h2> Suas Defesas Pendentes </h2></br>
                 @each(defesa in obj.dep)
                   <div>Data: {{defesa.dataDefesa}}</div>
