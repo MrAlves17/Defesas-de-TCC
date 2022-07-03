@@ -292,6 +292,18 @@ class HomeController {
                 })
                 session.flash({ successmessage: 'Participação na Banca Confirmada com sucesso.'})
                 return response.route('/home');
+            }else if(auth.user.id == idProfessor[0].idConvidadoA){
+                await Banca.query().where('idBanca',d.idBanca).update({
+                    statusConvidadoA: 'Confirmado'
+                })
+                session.flash({ successmessage: 'Participação na Banca Confirmada com sucesso.'})
+                return await view.render('home')
+            }else if(auth.user.id == idProfessor[0].idConvidadoB){
+                await Banca.query().where('idBanca',d.idBanca).update({
+                    statusConvidadoB: 'Confirmado'
+                })
+                session.flash({ successmessage: 'Participação na Banca Confirmada com sucesso.'})
+                return await view.render('home')
             }
         }
     }
@@ -307,10 +319,24 @@ class HomeController {
             if(auth.user.id == idProfessor[0].idOrientador){
                 await Banca.query().where('idBanca',d.idBanca).update({
                     idOrientador: null,
-                    statusOrientador: null,
+                    statusOrientador: null
                 })
                 session.flash({ successmessage: 'Participação na Banca Confirmada com sucesso.'})
                 return response.route('/home'); 
+            }else if(auth.user.id == idProfessor[0].idConvidadoA){
+                await Banca.query().where('idBanca',d.idBanca).update({
+                    idConvidadoA: null,
+                    statusConvidadoA: null
+                })
+                session.flash({ successmessage: 'Participação na Banca Confirmada com sucesso.'})
+                return await view.render('home')
+            }else if(auth.user.id == idProfessor[0].idConvidadoB){
+                await Banca.query().where('idBanca',d.idBanca).update({
+                    idConvidadoB: null,
+                    statusConvidadoB: null
+                })
+                session.flash({ successmessage: 'Participação na Banca Confirmada com sucesso.'})
+                return await view.render('home')
             }
         }
     }
