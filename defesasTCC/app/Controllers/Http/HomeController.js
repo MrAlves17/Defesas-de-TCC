@@ -202,6 +202,7 @@ class HomeController {
                     .leftJoin('Usuario as CA','Banca.IdConvidadoA','=','CA.id')
                     .leftJoin('Usuario as CB','Banca.IdConvidadoB','=','CB.id')
                     .select('Defesa.*')
+                    .select('PO.email as emailOrientador')
                     .select('PO.nomeUsuario as nomeOrientador')
                     .select('CA.nomeUsuario as nomeConvidadoA')
                     .select('CB.nomeUsuario as nomeConvidadoB')
@@ -232,9 +233,12 @@ class HomeController {
                     .where('ehInterno','=',1)
                     .where('email','like',all.emailOrientador)
                 })
+
+            console.log(orientador)
             let erroOrientador = ''
             if (orientador[0] == undefined){
-                erroOrientador = 'O Orientador informado não está no sistema. Verifique a ortografia ou entre em contato com ele para saber se ele se encontra no sistema.'
+                session.flash({ successmessage: 'O Orientador informado não está no sistema. Verifique a ortografia ou entre em contato com ele para saber se ele se encontra no sistema.'})
+                return response.route('/home')
             }else{
                 await Banca.query().where('idBanca',defesa.idBanca).update({
                     idOrientador: orientador[0].id,

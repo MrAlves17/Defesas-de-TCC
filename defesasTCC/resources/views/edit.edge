@@ -58,7 +58,7 @@
                         </div>
                         <div class="form-group">
                           <label for="emailOrientador">Email do Orientador</label></th>
-                          <input type="email" class="form-control" id="emailOrientador" name="emailOrientador" value="{{old('emailOrientador','')}}" placeholder="Insira o email do seu Orientador">
+                          <input type="email" class="form-control" id="emailOrientador" name="emailOrientador" value="{{old('emailOrientador',obj.defesa[0].emailOrientador)}}" placeholder="Insira o email do seu Orientador">
                             {{ elIf('<span class=text-danger>$self</span>', getErrorFor('emailOrientador'), hasErrorFor('emailOrientador')) }}
                         </div>
                         </br><div class="form-group">
