@@ -23,7 +23,7 @@ class HomeController {
             const professoresADesativar = 
                 await Database
                     .from('Defesa')
-                    .join('Banca','Defesa.idBanca','=','Banca.idBanca')
+                    .join('Banca','Defesa.idBanca','=','Banca.idBanca') 
                     .leftJoin('Usuario as CA','Banca.IdConvidadoA','=','CA.id')
                     .leftJoin('Usuario as CB','Banca.IdConvidadoB','=','CB.id')
                     .select('Defesa.statusDefesa', 'Defesa.updated_at')
