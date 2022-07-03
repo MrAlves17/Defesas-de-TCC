@@ -99,7 +99,20 @@ class HomeController {
                           .where('CB.id','=',auth.user.id)
                           .where('Banca.statusConvidadoB','=','Confirmado')
                     })
-            obj = {dep: defesasPendentes, dec: defesasConfirmadas}
+            obj = {dep: defesasPendentes, dec: defesasConfirmadas}  
+            var hoje = new Date()
+            // console.log(hoje)
+            var ultimaDefesa = defesasConfirmadas[0].updated_at
+            // console.log(ultimaDefesa)
+            var conta = Math.floor((Date.parse(hoje) - Date.parse(defesasConfirmadas[0].updated_at)) > 8640000000)
+            // console.log(conta)
+            // console.log(conta/864000000)
+            if(defesasConfirmadas[0].statusDefesa=='Finalizada' && conta > 864000000){
+                await Usuario.query().where('idUsuario',auth.user.id).update({
+                    statusUsuario: "Inativo"
+                })
+                return await view.render('/')
+            } 
         }
         return await view.render('home',{obj})
     }
