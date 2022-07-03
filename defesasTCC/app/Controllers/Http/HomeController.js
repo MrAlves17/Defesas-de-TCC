@@ -229,6 +229,8 @@ class HomeController {
         } else if (auth.user.idPerfil == 3){
             let erroConvidadoA = ''
             let erroConvidadoB = ''
+            let emailConvidadoA = ''
+            let emailConvidadoB = ''
             const convidadoA = await Database
                 .from('Usuario')
                 .select('id')
@@ -249,6 +251,10 @@ class HomeController {
                 })
             if (convidadoA[0] == undefined){
                 erroConvidadoA = 'O Professor '+emailConvidadoA+' informado não está no sistema. Verifique a ortografia ou entre em contato com ele para saber se ele se encontra no sistema.'
+                await Banca.query().where('idBanca',defesa.idBanca).update({
+                    idConvidadoA: null,
+                    statusConvidadoA: null
+                })
             }else{
                 await Banca.query().where('idBanca',defesa.idBanca).update({
                     idConvidadoA: convidadoA[0].id,
@@ -257,14 +263,16 @@ class HomeController {
             }
             if (convidadoB[0] == undefined){
                 erroConvidadoB = 'O Professor '+emailConvidadoB+' informado não está no sistema. Verifique a ortografia ou entre em contato com ele para saber se ele se encontra no sistema.'
+                await Banca.query().where('idBanca',defesa.idBanca).update({
+                    idConvidadoB: null,
+                    statusConvidadoB: null
+                })
             }else{
                 await Banca.query().where('idBanca',defesa.idBanca).update({
                     idConvidadoB: convidadoB[0].id,
                     statusConvidadoB: 'Aprovação Pendente'
                 })
             }
-            console.log(convidadoA[0].id)
-            console.log(convidadoA[0].id)
         }
         session.flash({ successmessage: 'Defesa Atualizada com Sucesso.'})
         return response.route('/home');
