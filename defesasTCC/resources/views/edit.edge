@@ -27,37 +27,40 @@
                     <form method="POST" action="/home/edita/defesa/{{obj.defesa[0].idDefesa}}?_method=PUT">
                         {{ csrfField() }}
                         <div>
-                        @if(flashMessage('successmessage'))
-                            <span class="alert alert-success p-1">{{ flashMessage('successmessage') }}</span>
-                        @endif
+                          @if(flashMessage('successmessage'))
+                              <span class="alert alert-success p-1">{{ flashMessage('successmessage') }}</span>
+                          @endif
                         </div> 
                         <div class="form-group"> 
-                        <label for="dataDefesa">Data da Defesa</label>
-                        <input type="date" class="form-control" id="dataDefesa" name="dataDefesa" value="{{old('dataDefesa',obj.defesa[0].dataDefesa)}}">
-                            {{ elIf('<span class=text-danger>$self</span>', getErrorFor('dataDefesa'), hasErrorFor('dataDefesa')) }}
+                          <label for="dataDefesa">Data da Defesa</label>
+                          <input type="datetime-local" class="form-control" id="dataDefesa" name="dataDefesa" value="{{old('dataDefesa',obj.defesa[0].dataDefesa)}}">
+                              {{ elIf('<span class=text-danger>$self</span>', getErrorFor('dataDefesa'), hasErrorFor('dataDefesa')) }}
                         </div>
                         <div class="form-group">
-                        <label for="local">Local da Defesa</label>
-                        <input type="text" class="form-control" id="local" name="local" value="{{old('local',obj.defesa[0].local)}}" placeholder="Insira o endereço ou link">
-                            {{ elIf('<span class=text-danger>$self</span>', getErrorFor('local'), hasErrorFor('local')) }}
+                          <label for="local">Local da Defesa</label>
+                          <input type="text" class="form-control" id="local" name="local" value="{{old('local',obj.defesa[0].local)}}" placeholder="Insira o endereço ou link">
+                              {{ elIf('<span class=text-danger>$self</span>', getErrorFor('local'), hasErrorFor('local')) }}
                         </div>
                         <div class="form-group">
-                        <label for="titulo">Título</label>
-                        <input type="text" class="form-control" id="titulo" name="titulo" value="{{old('titulo',obj.defesa[0].titulo)}}" placeholder="Insira o título do Trabalho">
-                            {{ elIf('<span class=text-danger>$self</span>', getErrorFor('titulo'), hasErrorFor('titulo')) }}
+                          <label for="titulo">Título</label>
+                          <input type="text" class="form-control" id="titulo" name="titulo" value="{{old('titulo',obj.defesa[0].titulo)}}" placeholder="Insira o título do Trabalho">
+                              {{ elIf('<span class=text-danger>$self</span>', getErrorFor('titulo'), hasErrorFor('titulo')) }}
                         </div>
                         <div class="form-group">
-                        <label for="descricao">Descrição</label></th>
-                        <input type="text" class="form-control" id="descricao" name="descricao" value="{{old('descricao',obj.defesa[0].descricao)}}">
-                            {{ elIf('<span class=text-danger>$self</span>', getErrorFor('descricao'), hasErrorFor('descricao')) }}
+                          <label for="descricao">Descrição</label></th>
+                          <input type="text" class="form-control" id="descricao" name="descricao" value="{{old('descricao',obj.defesa[0].descricao)}}">
+                              {{ elIf('<span class=text-danger>$self</span>', getErrorFor('descricao'), hasErrorFor('descricao')) }}
                         </div>
                         <div class="form-group">
-                        <label for="tags">Tags</label></th>
-                        <input type="text" class="form-control" id="tags" name="tags" value="{{old('tags',obj.defesa[0].tags)}}" placeholder="Insira palavras-chave">
-                            {{ elIf('<span class=text-danger>$self</span>', getErrorFor('tags'), hasErrorFor('tags')) }}
-                        </div>
-                        </div>
+                          <label for="tags">Tags</label></th>
+                          <input type="text" class="form-control" id="tags" name="tags" value="{{old('tags',obj.defesa[0].tags)}}" placeholder="Insira palavras-chave">
+                              {{ elIf('<span class=text-danger>$self</span>', getErrorFor('tags'), hasErrorFor('tags')) }}
                         <div class="form-group">
+                          <label for="emailOrientador">Email do Orientador</label></th>
+                          <input type="email" class="form-control" id="emailOrientador" name="emailOrientador" value="{{old('emailOrientador','')}}" placeholder="Insira o email do seu Orientador">
+                            {{ elIf('<span class=text-danger>$self</span>', getErrorFor('emailOrientador'), hasErrorFor('emailOrientador')) }}
+                        </div>
+                        </br><div class="form-group">
                             <button id='salvaDefesa' name='salvaDefesa' type="Submit" class="btn btn-primary">Salvar Defesa</button></br>
                         </div>
                     </form>
