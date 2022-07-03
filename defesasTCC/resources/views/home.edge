@@ -96,6 +96,7 @@
                 @endif
                 <h2> Sua Defesa Cadastrada </h2></br>
                   @each(defesa in obj.de)
+                    <div>Estudante: {{defesa.nomeEstudante}}</div>
                     <div>Data: {{defesa.dataDefesa}}</div>
                     <div>Local: {{defesa.local}}</div>
                     <div>Título: {{defesa.titulo}}</div>
@@ -119,6 +120,7 @@
               </div> 
                 <h2> Suas Defesas Pendentes </h2></br>
                 @each(defesa in obj.dep)
+                  <div>Estudante: {{defesa.nomeEstudante}}</div>
                   <div>Data: {{defesa.dataDefesa}}</div>
                   <div>Local: {{defesa.local}}</div>
                   <div>Título: {{defesa.titulo}}</div>
@@ -136,6 +138,7 @@
                 @endeach
                 <h2> </br>Suas Defesas Confirmadas </h2></br>
                 @each(defesa in obj.dec)
+                  <div>Estudante: {{defesa.nomeEstudante}}</div>
                   <div>Data: {{defesa.dataDefesa}}</div>
                   <div>Local: {{defesa.local}}</div>
                   <div>Título: {{defesa.titulo}}</div>
