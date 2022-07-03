@@ -68,7 +68,7 @@
               @endif
               @if(auth.user.idPerfil == 3)
                 <h2>Convidar Professores para a banca</h2></br>
-                <form method="POST" action="/home/edita/defesa/{{obj.defesa[0].idDefesa}}?_method=PUT">
+                <form method="POST" action="/home/edita/defesa/{{obj.defesa[0].idBanca}}?_method=PUT">
                 {{ csrfField() }}
                 <div>
                   @if(flashMessage('successmessage'))

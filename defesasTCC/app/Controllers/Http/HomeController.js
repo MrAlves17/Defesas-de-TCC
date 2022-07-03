@@ -194,36 +194,77 @@ class HomeController {
     async alteraDefesa({ request, auth, params: d, view, session, response }){
         const all = request.all()
         const defesa = await Defesa.findByOrFail('idDefesa',d.idDefesa)
-        await Defesa.query().where('idDefesa',d.idDefesa).update({
-            idDefesa: defesa.idDefesa,
-            dataDefesa: all.dataDefesa,
-            local: all.local,
-            titulo: all.titulo,
-            descricao: all.descricao,
-            tags: all.tags,
-        })
-        const orientador = await Database
-            .from('Usuario')
-            .select('id')
-            .select('nomeUsuario')
-            .where((query) => {
-                query
-                .where('idPerfil','=',3)
-                .where('ehInterno','=',1)
-                .where('email','like',all.emailOrientador)
+        if(auth.user.idPerfil == 2){
+            await Defesa.query().where('idDefesa',d.idDefesa).update({
+                idDefesa: defesa.idDefesa,
+                dataDefesa: all.dataDefesa,
+                local: all.local,
+                titulo: all.titulo,
+                descricao: all.descricao,
+                tags: all.tags,
             })
-        let erroOrientador = ''
-        if (orientador[0] == undefined){
-            erroOrientador = 'O Orientador informado não está no sistema. Verifique a ortografia ou entre em contato com ele para saber se ele se encontra no sistema.'
-        }else{
-            await Banca.query().where('idBanca',defesa.idBanca).update({
-                idOrientador: orientador[0].id,
-                statusOrientador: 'Aprovação Pendente',
-                idConvidadoA: null,
-                statusConvidadoA: null,
-                idConvidadoB: null,
-                statusConvidadoB: null
-            })
+            const orientador = await Database
+                .from('Usuario')
+                .select('id')
+                .select('nomeUsuario')
+                .where((query) => {
+                    query
+                    .where('idPerfil','=',3)
+                    .where('ehInterno','=',1)
+                    .where('email','like',all.emailOrientador)
+                })
+            let erroOrientador = ''
+            if (orientador[0] == undefined){
+                erroOrientador = 'O Orientador informado não está no sistema. Verifique a ortografia ou entre em contato com ele para saber se ele se encontra no sistema.'
+            }else{
+                await Banca.query().where('idBanca',defesa.idBanca).update({
+                    idOrientador: orientador[0].id,
+                    statusOrientador: 'Aprovação Pendente',
+                    idConvidadoA: null,
+                    statusConvidadoA: null,
+                    idConvidadoB: null,
+                    statusConvidadoB: null
+                })
+            }
+        } else if (auth.user.idPerfil == 3){
+            let erroConvidadoA = ''
+            let erroConvidadoB = ''
+            const convidadoA = await Database
+                .from('Usuario')
+                .select('id')
+                .select('nomeUsuario')
+                .where((query) => {
+                    query
+                    .where('idPerfil','=',3)
+                    .where('email','like',all.emailConvidadoA)
+                })
+            const convidadoB = await Database
+                .from('Usuario')
+                .select('id')
+                .select('nomeUsuario')
+                .where((query) => {
+                    query
+                    .where('idPerfil','=',3)
+                    .where('email','like',all.emailConvidadoB)
+                })
+            if (convidadoA[0] == undefined){
+                erroConvidadoA = 'O Professor '+emailConvidadoA+' informado não está no sistema. Verifique a ortografia ou entre em contato com ele para saber se ele se encontra no sistema.'
+            }else{
+                await Banca.query().where('idBanca',defesa.idBanca).update({
+                    idConvidadoA: convidadoA[0].id,
+                    statusConvidadoA: 'Aprovação Pendente'
+                })
+            }
+            if (convidadoB[0] == undefined){
+                erroConvidadoB = 'O Professor '+emailConvidadoB+' informado não está no sistema. Verifique a ortografia ou entre em contato com ele para saber se ele se encontra no sistema.'
+            }else{
+                await Banca.query().where('idBanca',defesa.idBanca).update({
+                    idConvidadoB: convidadoB[0].id,
+                    statusConvidadoB: 'Aprovação Pendente'
+                })
+            }
+            console.log(convidadoA[0].id)
+            console.log(convidadoA[0].id)
         }
         session.flash({ successmessage: 'Defesa Atualizada com Sucesso.'})
         return response.route('/home');
