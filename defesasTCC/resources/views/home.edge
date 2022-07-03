@@ -148,7 +148,9 @@
                   <div>Status do Convidado A: {{defesa.statusConvidadoA}}</div>
                   <div>Professor Convidado B: {{defesa.nomeConvidadoB}}</div>
                   <div>Status do Convidado B: {{defesa.statusConvidadoB}}</div></br>
-                  <form method="POST" action="home/edita/{{defesa.idDefesa}}?_method=PUT">{{ csrfField() }}<button type="Submit" class="btn btn-primary">Convidar Professores</button><form>
+                  @if(defesa.idConvidadoA != auth.user.id && defesa.idConvidadoB != auth.user.id)
+                    <form method="POST" action="home/edita/{{defesa.idDefesa}}?_method=PUT">{{ csrfField() }}<button type="Submit" class="btn btn-primary">Convidar Professores</button><form>
+                  @endif
                 @endeach
               @endif
             @endloggedIn
