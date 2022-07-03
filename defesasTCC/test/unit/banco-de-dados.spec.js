@@ -1,12 +1,14 @@
 'use strict'
 
-const { test } = use('Test/Suite')('Banco De Dados')
+const { test, trait } = use('Test/Suite')('Banco De Dados')
 const Factory = use('Factory')
 const fake_obj = use('@faker-js/faker')
 const faker = fake_obj.faker
 const Database = use('Database')
 const Hash = use('Hash')
 const _ = use('lodash')
+
+trait('DatabaseTransactions')
 
 test('criação e consulta no BD da tabela Perfil e Usuario', async ({ assert }) => {
 	const pObj = {

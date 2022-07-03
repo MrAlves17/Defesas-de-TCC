@@ -45,6 +45,7 @@ class HomeController {
         session.flash({ successmessage: "Cadastro de "+usuarioPendente.nomeUsuario+" aceito"})
         return await response.route('/home')      
     }
+
     async postDenyRegister({ response, params:id, session }){
         const usuarioPendente = await User.findBy('id',id.idUsuario)
         await usuarioPendente.delete()
@@ -72,6 +73,52 @@ class HomeController {
             idBanca: banca.id  
         })
         session.flash({ successmessage: 'Defesa Criada com Sucesso.'})
+        return response.route('/home');
+    }
+    async getDefesa({ auth, params:defe, view }){
+        const defesa = 
+                await Database
+                    .from('Defesa')
+                    .join('Banca','Defesa.idBanca','=','Banca.idBanca')
+                    .leftJoin('Usuario as PO','Banca.IdOrientador','=','PO.id')
+                    .leftJoin('Usuario as CA','Banca.IdConvidadoA','=','CA.id')
+                    .leftJoin('Usuario as CB','Banca.IdConvidadoB','=','CB.id')
+                    .select('Defesa.*')
+                    .select('PO.nomeUsuario as nomeOrientador')
+                    .select('CA.nomeUsuario as nomeConvidadoA')
+                    .select('CB.nomeUsuario as nomeConvidadoB')
+                    .select('Banca.*')
+                    .where('idDefesa','=',defe.idDefesa)
+                    console.log(defesa)
+        const obj = {defesa: defesa}
+        return await view.render('edit',{obj})
+    }
+    async alteraDefesa({ request, auth, params: d, view, session, response } ){
+        const all = request.all()
+        const defesa = await Defesa.findByOrFail('idDefesa',d.idDefesa)
+        await Defesa.query().where('idDefesa',d.idDefesa).update({
+            idDefesa: defesa.idDefesa,
+            dataDefesa: all.dataDefesa,
+            local: all.local,
+            titulo: all.titulo,
+            descricao: all.descricao,
+            tags: all.tags
+        })
+        // const defesa = await Defesa.findByOrFail('idDefesa',d.idDefesa)
+        // console.log('defesa 1')
+        // console.log(defesa)
+        // await defesa.merge({
+        //     idDefesa: defesa.idDefesa,
+        //     dataDefesa: all.dataDefesa,
+        //     local: all.local,
+        //     titulo: all.titulo,
+        //     descricao: all.descricao,
+        //     tags: all.tags
+        // })
+        // console.log('defesa 2')
+        // console.log(defesa)
+        // await defesa.save()
+        session.flash({ successmessage: 'Defesa Atualizada com Sucesso.'})
         return response.route('/home');
     }
 }
