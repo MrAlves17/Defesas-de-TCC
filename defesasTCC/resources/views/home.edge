@@ -47,6 +47,17 @@
                     </tr>
                   @endeach
                 </table>
+
+              <h2> Professores a desativar </h2></br>
+                  @each(defesa in obj.pd)
+                    <div>Status da Defesa: {{defesa.statusDefesa}}</div>
+                    <div>Última Alteração: {{defesa.updated_at}}</div>
+                    <div>Professor Convidado A: {{defesa.nomeConvidadoA}}</div>
+                    <div>Status do Convidado A: {{defesa.statusConvidadoA}}</div>
+                    <div>Professor Convidado B: {{defesa.nomeConvidadoB}}</div>
+                    <div>Status do Convidado B: {{defesa.statusConvidadoB}}</div></br>
+                    <form method="POST" action="home/edita/{{defesa.idDefesa}}?_method=PUT">{{ csrfField() }}<button type="Submit" class="btn btn-primary">Editar</button><form>
+                  @endeach
               @endif
               @if(auth.user.idPerfil==2)
                 <div>
@@ -105,7 +116,8 @@
                     <div>Título: {{defesa.titulo}}</div>
                     <div>Descrição: {{defesa.descricao}}</div>
                     <div>Tags: {{defesa.tags}}</div>
-                    <div>Status: {{defesa.statusDefesa}}</div>
+                    <div>Status da Defesa: {{defesa.statusDefesa}}</div>
+                    <div>Última Alteração: {{defesa.updated_at}}</div>
                     <div>Professor Orientador: {{defesa.nomeOrientador}}</div>
                     <div>Status do Orientador: {{defesa.statusOrientador}}</div>
                     <div>Professor Convidado A: {{defesa.nomeConvidadoA}}</div>
@@ -129,7 +141,8 @@
                   <div>Título: {{defesa.titulo}}</div>
                   <div>Descrição: {{defesa.descricao}}</div>
                   <div>Tags: {{defesa.tags}}</div>
-                  <div>Status: {{defesa.statusDefesa}}</div>
+                  <div>Status da Defesa: {{defesa.statusDefesa}}</div>
+                  <div>Última Alteração: {{defesa.updated_at}}</div>
                   <div>Professor Orientador: {{defesa.nomeOrientador}}</div>
                   <div>Status do Orientador: {{defesa.statusOrientador}}</div>
                   <div>Professor Convidado A: {{defesa.nomeConvidadoA}}</div>
@@ -147,7 +160,8 @@
                   <div>Título: {{defesa.titulo}}</div>
                   <div>Descrição: {{defesa.descricao}}</div>
                   <div>Tags: {{defesa.tags}}</div>
-                  <div>Status: {{defesa.statusDefesa}}</div>
+                  <div>Status da Defesa: {{defesa.statusDefesa}}</div>
+                  <div>Última Alteração: {{defesa.updated_at}}</div>
                   <div>Professor Orientador: {{defesa.nomeOrientador}}</div>
                   <div>Status do Orientador: {{defesa.statusOrientador}}</div>
                   <div>Professor Convidado A: {{defesa.nomeConvidadoA}}</div>

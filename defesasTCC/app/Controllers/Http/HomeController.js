@@ -19,7 +19,32 @@ class HomeController {
                     .select('Usuario.*')
                     .select('Perfil.nomePerfil')
                     .where('statusUsuario', 'like', '%Pendente%')
-            obj = {up: usuariosPendentes}
+            
+            const professoresADesativar = 
+                await Database
+                    .from('Defesa')
+                    .join('Banca','Defesa.idBanca','=','Banca.idBanca')
+                    .leftJoin('Usuario as CA','Banca.IdConvidadoA','=','CA.id')
+                    .leftJoin('Usuario as CB','Banca.IdConvidadoB','=','CB.id')
+                    .select('Defesa.statusDefesa', 'Defesa.updated_at')
+                    .distinct('CA.nomeUsuario as nomeConvidadoA')
+                    .distinct('CB.nomeUsuario as nomeConvidadoB')
+                    .select('Banca.idConvidadoA','Banca.idConvidadoB')
+                    .where((query) => {
+                        query
+                        .where('CA.statusUsuario','=','Ativo')
+                        .where('CA.ehInterno','=',0)
+                        .where('Defesa.statusDefesa','=','Finalizada')
+                    })
+                    .orWhere((query) => {
+                        query
+                        .where('CB.statusUsuario','=','Ativo')
+                        .where('CB.ehInterno','=',0)
+                        .where('Defesa.statusDefesa','=','Finalizada')
+                    })
+                    .orderBy('Defesa.updated_at', 'desc')
+            
+            obj = {up: usuariosPendentes, pd: professoresADesativar}
         } else if (auth.user.idPerfil == 2){
             const defesaExistente = 
                 await Database
@@ -126,13 +151,19 @@ class HomeController {
         const usuarioPendente = await User.findBy('id',u.idUsuario)
         await usuarioPendente.merge({statusUsuario:'Ativo'})
         await usuarioPendente.save()
-        return await view.render('home')      
+        return await response.route('/home')      
     }
     async postDenyRegister({ view, auth, response, request, params:u }){
         const usuarioPendente = await User.findBy('id',u.idUsuario)
         await usuarioPendente.delete()
         await usuarioPendente.save()
-        return await view.render('home')   
+        return await response.route('/home')   
+    }
+    async postDeactivateRegister({ view, auth, response, request, params:u }){
+        const usuarioPendente = await User.findBy('id',u.idUsuario)
+        await usuarioPendente.merge({statusUsuario:'Inativo'})
+        await usuarioPendente.save()
+        return await response.route('/home')   
     }
     async validaProfessor({email: e,idPerfil: p}){
         const professor =
