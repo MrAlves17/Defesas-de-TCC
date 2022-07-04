@@ -141,28 +141,32 @@
                   <div>Status do Convidado A: {{defesa.statusConvidadoA}}</div>
                   <div>Professor Convidado B: {{defesa.nomeConvidadoB}}</div>
                   <div>Status do Convidado B: {{defesa.statusConvidadoB}}</div></br>
-                  <form method="POST" action="home/confirmaDefesa/{{defesa.idBanca}}?_method=PUT">{{ csrfField() }}<button type="Submit" class="btn btn-primary">Confirmar Participação</button></form>
-                  <form method="POST" action="home/recusaDefesa/{{defesa.idBanca}}?_method=PUT">{{ csrfField() }}<button type="Submit" class="btn btn-primary">Recusar Participação</button></form>
+                  <form method="POST" action="home/confirmaDefesa/{{defesa.idBanca}}?_method=PUT">{{ csrfField() }}<button type="Submit" class="btn btn-primary" id="confirmaDefesa" name="confirmaDefesa">Confirmar Participação</button></form>
+                  <form method="POST" action="home/recusaDefesa/{{defesa.idBanca}}?_method=PUT">{{ csrfField() }}<button type="Submit" class="btn btn-primary" id="recusaDefesa" name="recusaDefesa">Recusar Participação</button></form>
                 @endeach
-                <h2> </br>Suas Defesas Confirmadas </h2></br>
-                @each(defesa in obj.dec)
-                  <div>Estudante: {{defesa.nomeEstudante}}</div>
-                  <div>Data: {{defesa.dataDefesa}}</div>
-                  <div>Local: {{defesa.local}}</div>
-                  <div>Título: {{defesa.titulo}}</div>
-                  <div>Descrição: {{defesa.descricao}}</div>
-                  <div>Tags: {{defesa.tags}}</div>
-                  <div>Status: {{defesa.statusDefesa}}</div>
-                  <div>Professor Orientador: {{defesa.nomeOrientador}}</div>
-                  <div>Status do Orientador: {{defesa.statusOrientador}}</div>
-                  <div>Professor Convidado A: {{defesa.nomeConvidadoA}}</div>
-                  <div>Status do Convidado A: {{defesa.statusConvidadoA}}</div>
-                  <div>Professor Convidado B: {{defesa.nomeConvidadoB}}</div>
-                  <div>Status do Convidado B: {{defesa.statusConvidadoB}}</div></br>
+                <div id="defesasConfirmadas" name="defesasConfirmadas">
+                  <h2> </br>Suas Defesas Confirmadas </h2></br>
+                  @each(defesa in obj.dec)
+                    <div >
+                      <div>Estudante: {{defesa.nomeEstudante}}</div>
+                      <div>Data: {{defesa.dataDefesa}}</div>
+                      <div>Local: {{defesa.local}}</div>
+                      <div>Título: {{defesa.titulo}}</div>
+                      <div>Descrição: {{defesa.descricao}}</div>
+                      <div>Tags: {{defesa.tags}}</div>
+                      <div>Status: {{defesa.statusDefesa}}</div>
+                      <div>Professor Orientador: {{defesa.nomeOrientador}}</div>
+                      <div>Status do Orientador: {{defesa.statusOrientador}}</div>
+                      <div>Professor Convidado A: {{defesa.nomeConvidadoA}}</div>
+                      <div>Status do Convidado A: {{defesa.statusConvidadoA}}</div>
+                      <div>Professor Convidado B: {{defesa.nomeConvidadoB}}</div>
+                      <div>Status do Convidado B: {{defesa.statusConvidadoB}}</div></br>
+                    </div>
                   @if(defesa.idConvidadoA != auth.user.id && defesa.idConvidadoB != auth.user.id)
                     <form method="POST" action="home/edita/{{defesa.idDefesa}}?_method=PUT">{{ csrfField() }}<button type="Submit" class="btn btn-primary">Convidar Professores</button><form>
                   @endif
-                @endeach
+                  @endeach
+                </div>
               @endif
             @endloggedIn
           </div>
