@@ -49,15 +49,11 @@
                 </table>
 
               <h2> Professores a desativar </h2></br>
-                  @each(defesa in obj.pd)
-                    <div>Status da Defesa: {{defesa.statusDefesa}}</div>
-                    <div>Última Alteração: {{defesa.updated_at}}</div>
-                    <div>Professor Convidado A: {{defesa.nomeConvidadoA}}</div>
-                    <div>Status do Convidado A: {{defesa.statusConvidadoA}}</div>
-                    <div>Professor Convidado B: {{defesa.nomeConvidadoB}}</div>
-                    <div>Status do Convidado B: {{defesa.statusConvidadoB}}</div></br>
-                    @if()
-                    <form method="POST" action="home/deactivate/{{}}?_method=PUT">{{ csrfField() }}<button type="Submit" class="btn btn-primary">Editar</button><form>
+                  @each(profExterno in obj.pd)
+                    <div>Nome: {{profExterno.NomeProfessorExterno}}</div>
+                    <div>Última Alteração: {{profExterno.DataDefesa}}</div>
+                    <div>Status da Defesa B: {{profExterno.StatusDefesa}}</div></br>
+                    {{--  <form method="POST" action="home/deactivate/{{}}?_method=PUT">{{ csrfField() }}<button type="Submit" class="btn btn-primary">Editar</button><form>  --}}
                   @endeach
               @endif
               @if(auth.user.idPerfil==2)

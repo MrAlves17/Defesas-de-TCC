@@ -6,6 +6,7 @@ const User = use('App/Models/User')
 const Defesa = use('App/Models/Defesa')
 const Banca = use('App/Models/Banca')
 const Hash = use('Hash')
+const client = Database.connection()
 
 class HomeController {
 
@@ -19,31 +20,35 @@ class HomeController {
                     .select('Usuario.*')
                     .select('Perfil.nomePerfil')
                     .where('statusUsuario', 'like', '%Pendente%')
-            
             const professoresADesativar = 
                 await Database
-                    .from('Defesa')
-                    .join('Banca','Defesa.idBanca','=','Banca.idBanca') 
-                    .leftJoin('Usuario as CA','Banca.IdConvidadoA','=','CA.id')
-                    .leftJoin('Usuario as CB','Banca.IdConvidadoB','=','CB.id')
-                    .select('Defesa.statusDefesa', 'Defesa.updated_at')
-                    .distinct('CA.nomeUsuario as nomeConvidadoA')
-                    .distinct('CB.nomeUsuario as nomeConvidadoB')
-                    .select('Banca.idConvidadoA','Banca.idConvidadoB')
-                    .where((query) => {
-                        query
-                        .where('CA.statusUsuario','=','Ativo')
-                        .where('CA.ehInterno','=',0)
-                        .where('Defesa.statusDefesa','=','Finalizada')
+                    .from('Usuario as U')
+                    .leftJoin('Banca as BA','BA.idConvidadoA','=','U.id')
+                    .leftJoin('Defesa as DA','DA.idBanca','=','BA.idBanca')
+                    .distinct('U.id as idProfessorExterno')
+                    .select('U.nomeUsuario as NomeProfessorExterno')
+                    .select('DA.updated_at as DataDefesa')                
+                    .select('DA.statusDefesa as StatusDefesa')
+                    .where('U.idPerfil','=',3)
+                    .where('U.ehInterno','=',0)
+                    .where('U.statusUsuario','=','Ativo')
+                    .where('DA.statusDefesa','=','Finalizada')
+                    .whereNotNull('DA.updated_at')                 
+                    .union((subquery) => {
+                        subquery
+                        .from('Usuario as U')
+                        .leftJoin('Banca as BB','BB.idConvidadoB','=','U.id')
+                        .leftJoin('Defesa as DB','DB.idBanca','=','BB.idBanca')
+                        .distinct('U.id as idProfessorExterno')
+                        .select('U.nomeUsuario as NomeProfessorExterno')
+                        .select('DB.updated_at as DataDefesa')
+                        .select('DB.statusDefesa as StatusDefesa')
+                        .where('U.idPerfil','=',3)
+                        .where('U.ehInterno','=',0)
+                        .where('U.statusUsuario','=','Ativo')
+                        .where('DB.statusDefesa','=','Finalizada')
+                        .whereNotNull('DB.updated_at')           
                     })
-                    .orWhere((query) => {
-                        query
-                        .where('CB.statusUsuario','=','Ativo')
-                        .where('CB.ehInterno','=',0)
-                        .where('Defesa.statusDefesa','=','Finalizada')
-                    })
-                    .orderBy('Defesa.updated_at', 'desc')
-            
             obj = {up: usuariosPendentes, pd: professoresADesativar}
         } else if (auth.user.idPerfil == 2){
             const defesaExistente = 
