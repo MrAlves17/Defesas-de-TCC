@@ -55,14 +55,12 @@
                 </table>
               @endif
               @if(auth.user.idPerfil==2)
-
                 <div>
                   @if(flashMessage('successmessage'))
                     <span class="alert alert-success p-1">{{ flashMessage('successmessage') }}</span>
                   @endif
                 </div> 
                 @if(obj.de.length == 0)
-
                   <h2>Agendamento de Defesa</h2></br>
                   <form method="POST" action="home/cria/defesa">
                     {{ csrfField() }}
@@ -102,44 +100,11 @@
 
                     </div>
                   </form>
-                </br>
+                  </br>
                 @endif
                 <h2> Sua Defesa Cadastrada </h2></br>
                   @each(defesa in obj.de)
-                    <div>Data: {{defesa.dataDefesa}}</div>
-                    <div>Local: {{defesa.local}}</div>
-                    <div>Título: {{defesa.titulo}}</div>
-                    <div>Descrição: {{defesa.descricao}}</div>
-                    <div>Tags: {{defesa.tags}}</div>
-                    <div>Status: {{defesa.statusDefesa}}</div>
-                    <div>Professor Orientador: {{defesa.nomeOrientador}}</div>
-                    <div>Status do Orientador: {{defesa.statusOrientador}}</div>
-                    <div>Professor Convidado A: {{defesa.nomeConvidadoA}}</div>
-                    <div>Status do Convidado A: {{defesa.statusConvidadoA}}</div>
-                    <div>Professor Convidado B: {{defesa.nomeConvidadoB}}</div>
-                    <div>Status do Convidado B: {{defesa.statusConvidadoB}}</div></br>
-                    <form method="POST" action="home/edita/{{defesa.idDefesa}}?_method=PUT">{{ csrfField() }}<button type="Submit" class="btn btn-primary">Editar</button><form>
-                  @endeach
-              @endif
-              @if(auth.user.idPerfil==3)
-                <h2> Suas Defesas Pendentes </h2></br>
-                  @each(defesa in obj.dep)
-                    <div>Data: {{defesa.dataDefesa}}</div>
-                    <div>Local: {{defesa.local}}</div>
-                    <div>Título: {{defesa.titulo}}</div>
-                    <div>Descrição: {{defesa.descricao}}</div>
-                    <div>Tags: {{defesa.tags}}</div>
-                    <div>Status: {{defesa.statusDefesa}}</div>
-                    <div>Professor Orientador: {{defesa.nomeOrientador}}</div>
-                    <div>Status do Orientador: {{defesa.statusOrientador}}</div>
-                    <div>Professor Convidado A: {{defesa.nomeConvidadoA}}</div>
-                    <div>Status do Convidado A: {{defesa.statusConvidadoA}}</div>
-                    <div>Professor Convidado B: {{defesa.nomeConvidadoB}}</div>
-                    <div>Status do Convidado B: {{defesa.statusConvidadoB}}</div></br>
-                    <form method="POST" action="home/edita/{{defesa.idDefesa}}?_method=PUT">{{ csrfField() }}<button type="Submit" class="btn btn-primary">Editar</button><form>
-                  @endeach
-                <h2> </br>Suas Defesas Confirmadas </h2></br>
-                  @each(defesa in obj.dec)
+                    <div>Estudante: {{defesa.nomeEstudante}}</div>
                     <div>Data: {{defesa.dataDefesa}}</div>
                     <div>Local: {{defesa.local}}</div>
                     <div>Título: {{defesa.titulo}}</div>
@@ -154,6 +119,50 @@
                     <div>Status do Convidado B: {{defesa.statusConvidadoB}}</div></br>
                     <form method="POST" action="home/edita/{{defesa.idDefesa}}?_method=PUT">{{ csrfField() }}<button id="edita-{{defesa.idDefesa}}" name="edita-{{defesa.idDefesa}}" type="Submit" class="btn btn-primary">Editar</button><form>
                   @endeach
+              @endif
+              @if(auth.user.idPerfil==3)
+              <div>
+                @if(flashMessage('successmessage'))
+                  <span class="alert alert-success p-1">{{ flashMessage('successmessage') }}</span>
+                @endif
+              </div> 
+                <h2> Suas Defesas Pendentes </h2></br>
+                @each(defesa in obj.dep)
+                  <div>Estudante: {{defesa.nomeEstudante}}</div>
+                  <div>Data: {{defesa.dataDefesa}}</div>
+                  <div>Local: {{defesa.local}}</div>
+                  <div>Título: {{defesa.titulo}}</div>
+                  <div>Descrição: {{defesa.descricao}}</div>
+                  <div>Tags: {{defesa.tags}}</div>
+                  <div>Status: {{defesa.statusDefesa}}</div>
+                  <div>Professor Orientador: {{defesa.nomeOrientador}}</div>
+                  <div>Status do Orientador: {{defesa.statusOrientador}}</div>
+                  <div>Professor Convidado A: {{defesa.nomeConvidadoA}}</div>
+                  <div>Status do Convidado A: {{defesa.statusConvidadoA}}</div>
+                  <div>Professor Convidado B: {{defesa.nomeConvidadoB}}</div>
+                  <div>Status do Convidado B: {{defesa.statusConvidadoB}}</div></br>
+                  <form method="POST" action="home/confirmaDefesa/{{defesa.idBanca}}?_method=PUT">{{ csrfField() }}<button type="Submit" class="btn btn-primary">Confirmar Participação</button></form>
+                  <form method="POST" action="home/recusaDefesa/{{defesa.idBanca}}?_method=PUT">{{ csrfField() }}<button type="Submit" class="btn btn-primary">Recusar Participação</button></form>
+                @endeach
+                <h2> </br>Suas Defesas Confirmadas </h2></br>
+                @each(defesa in obj.dec)
+                  <div>Estudante: {{defesa.nomeEstudante}}</div>
+                  <div>Data: {{defesa.dataDefesa}}</div>
+                  <div>Local: {{defesa.local}}</div>
+                  <div>Título: {{defesa.titulo}}</div>
+                  <div>Descrição: {{defesa.descricao}}</div>
+                  <div>Tags: {{defesa.tags}}</div>
+                  <div>Status: {{defesa.statusDefesa}}</div>
+                  <div>Professor Orientador: {{defesa.nomeOrientador}}</div>
+                  <div>Status do Orientador: {{defesa.statusOrientador}}</div>
+                  <div>Professor Convidado A: {{defesa.nomeConvidadoA}}</div>
+                  <div>Status do Convidado A: {{defesa.statusConvidadoA}}</div>
+                  <div>Professor Convidado B: {{defesa.nomeConvidadoB}}</div>
+                  <div>Status do Convidado B: {{defesa.statusConvidadoB}}</div></br>
+                  @if(defesa.idConvidadoA != auth.user.id && defesa.idConvidadoB != auth.user.id)
+                    <form method="POST" action="home/edita/{{defesa.idDefesa}}?_method=PUT">{{ csrfField() }}<button type="Submit" class="btn btn-primary">Convidar Professores</button><form>
+                  @endif
+                @endeach
               @endif
             @endloggedIn
           </div>

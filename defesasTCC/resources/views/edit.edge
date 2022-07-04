@@ -55,15 +55,40 @@
                           <label for="tags">Tags</label></th>
                           <input type="text" class="form-control" id="tags" name="tags" value="{{old('tags',obj.defesa[0].tags)}}" placeholder="Insira palavras-chave">
                               {{ elIf('<span class=text-danger>$self</span>', getErrorFor('tags'), hasErrorFor('tags')) }}
+                        </div>
                         <div class="form-group">
                           <label for="emailOrientador">Email do Orientador</label></th>
-                          <input type="email" class="form-control" id="emailOrientador" name="emailOrientador" value="{{old('emailOrientador','')}}" placeholder="Insira o email do seu Orientador">
+                          <input type="email" class="form-control" id="emailOrientador" name="emailOrientador" value="{{old('emailOrientador',obj.defesa[0].emailOrientador)}}" placeholder="Insira o email do seu Orientador">
                             {{ elIf('<span class=text-danger>$self</span>', getErrorFor('emailOrientador'), hasErrorFor('emailOrientador')) }}
                         </div>
                         </br><div class="form-group">
                             <button id='salvaDefesa' name='salvaDefesa' type="Submit" class="btn btn-primary">Salvar Defesa</button></br>
                         </div>
                     </form>
+              @endif
+              @if(auth.user.idPerfil == 3)
+                <h2>Convidar Professores para a banca</h2></br>
+                <form method="POST" action="/home/edita/defesa/{{obj.defesa[0].idBanca}}?_method=PUT">
+                {{ csrfField() }}
+                <div>
+                  @if(flashMessage('successmessage'))
+                      <span class="alert alert-success p-1">{{ flashMessage('successmessage') }}</span>
+                  @endif
+                  <div class="form-group">
+                    <label for="emailConvidadoA">Email do primeiro Professor convidado</label></th>
+                    <input type="email" class="form-control" id="emailConvidadoA" name="emailConvidadoA" value="{{old('emailConvidadoA','')}}" placeholder="Insira o email do primeiro Professor convidado">
+                    {{ elIf('<span class=text-danger>$self</span>', getErrorFor('emailConvidadoA'), hasErrorFor('emailConvidadoA')) }}
+                  </div>
+                  <div class="form-group">
+                    <label for="emailConvidadoB">Email do segundo Professor convidado</label></th>
+                    <input type="email" class="form-control" id="emailConvidadoB" name="emailConvidadoB" value="{{old('emailConvidadoB','')}}" placeholder="Insira o email do segundo Professor convidado">
+                    {{ elIf('<span class=text-danger>$self</span>', getErrorFor('emailConvidadoB'), hasErrorFor('emailConvidadoB')) }}
+                  </div>
+                  </br><div class="form-group">
+                    <button type="Submit" class="btn btn-primary">Salvar Defesa</button></br>
+                  </div>
+                </div>
+                </form>
               @endif
             @endloggedIn
           </div>
