@@ -239,7 +239,6 @@ class HomeController {
                     .where('email','like',all.emailOrientador)
                 })
 
-            console.log(orientador)
             let erroOrientador = ''
             if (orientador[0] == undefined){
                 session.flash({ successmessage: 'O Orientador informado não está no sistema. Verifique a ortografia ou entre em contato com ele para saber se ele se encontra no sistema.'})
