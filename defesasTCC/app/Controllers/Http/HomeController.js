@@ -122,17 +122,20 @@ class HomeController {
         }
         return await view.render('home',{obj})
     }
-    async postConfirmRegister({ view, auth, response, request, params:u }){
-        const usuarioPendente = await User.findBy('id',u.idUsuario)
+    async postConfirmRegister({ response, params:id, session }){
+        const usuarioPendente = await User.findBy('id',id.idUsuario)
         await usuarioPendente.merge({statusUsuario:'Ativo'})
         await usuarioPendente.save()
-        return await view.render('home')      
+        session.flash({ successmessage: "Cadastro de "+usuarioPendente.nomeUsuario+" aceito"})
+        return await response.route('/home')      
     }
-    async postDenyRegister({ view, auth, response, request, params:u }){
-        const usuarioPendente = await User.findBy('id',u.idUsuario)
+
+    async postDenyRegister({ response, params:id, session }){
+        const usuarioPendente = await User.findBy('id',id.idUsuario)
         await usuarioPendente.delete()
         await usuarioPendente.save()
-        return await view.render('home')   
+        session.flash({ successmessage: "Cadastro de "+usuarioPendente.nomeUsuario+" recusado"})
+        return await response.route('/home')   
     }
     async validaProfessor({email: e,idPerfil: p}){
         const professor =
@@ -190,7 +193,9 @@ class HomeController {
             idEstudante: auth.user.id,
             idBanca: banca.id  
         })
+
         session.flash({ successmessage: 'Defesa Criada com Sucesso. ' + erroOrientador})
+
         return response.route('/home');
     }
     async getDefesa({ auth, params:defe, view }){

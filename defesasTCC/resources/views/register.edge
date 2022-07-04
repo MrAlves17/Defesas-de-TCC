@@ -14,7 +14,7 @@
   <div class="container">
   <div class="row">
     <div class="col-10 shadow bg-white mt-5 mx-5 p-3 rounded offset-md-4">
-      <form method="POST" action="{{route('auth.postRegister')}}">
+      <form id="cadastrar" name="cadastrar" method="POST" action="{{route('auth.postRegister')}}">
         {{ csrfField() }}
           <div>
             @if(flashMessage('successmessage'))
@@ -44,9 +44,9 @@
           <div class="form-group">
             <label for="perfil">Perfil</label>
             <select class="form-control" id="idPerfil" name="idPerfil" value="{{old('idPerfil','')}}">
-                <option value=2>Estudante</option> 
-                <option value=3>Professor</option> 
-                <option value=4>Secretaria</option> 
+                <option value="2">Estudante</option> 
+                <option value="3">Professor</option> 
+                <option value="4">Secretaria</option> 
             {{ elIf('<span class=text-danger>$self</span>', getErrorFor('idPerfil'), hasErrorFor('idPerfil')) }}
             </select>
           </div>
@@ -59,7 +59,7 @@
             </select>
           </div>
           <div class="text-center">
-            <button type="Submit" class="btn btn-primary">Cadastrar</button>
+            <button id="cadastrar" name="cadastrar" type="Submit" class="btn btn-primary">Cadastrar</button>
           </div>
       </form>
     </div>
